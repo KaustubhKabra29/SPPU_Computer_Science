@@ -1,0 +1,121 @@
+Name : Search query
+Summary: User searches for a query. If the user was a registered or a subscribed user, then the query helps in giving recommendation.
+Actor: User
+Precondition: None.
+Description: The user types the query he wants to search 
+			for. He clicks on the submit button and after submitting he gets the desired results from the database that stores all the relevant results. After this, if it is an anonymous user, then recommendation happens per session. Else, if the user is registered or subscribed user, then the search query helps in giving more fine tuned recommendation in the future.
+Exception: If the query results are not present in the database. An invalid message is displayed
+Post condition: In case of query text not present in the database, the user is still in the query page and he can search some alternative
+
+
+
+Name : Content
+Summary : User views content. The content is based on the recommendation that is got from previous search queries or likes/dislike information.
+Actor: User
+Precondition: None
+Description: The user views content from the system and 
+			appropriate results are displayed for him as and when required.
+Exception: None
+Post condition: User views better recommendation later on.
+
+
+
+Name : ads
+Summary :  A user who is not subscribed sees ads in the page.
+Actor: Anonymous user, Registered user.
+Precondition: None
+Description: The anonymous user and registered user see
+			ads in the display page since they are not subscribed user. The ads are relevant to their search queries.
+Exception: If the user is subscribed user.
+Post condition: In case of subscribed user, he can report
+			that he is seeing an ad and appropriate correction could be done immediately by the system.
+			In case of registered and anonymous users, they continue to see ads and if they don't want to see ads, then they can get an option to become subscribed users.
+
+
+
+Name : View recommendation 
+Summary : a user who is not anonymous user gets to view 
+		history specific recommendation.
+Actor : Registered user, Subscribed user
+Precondition : the user needs to be logged in/ should sign up if anonymous.
+Description : the registered user and subscribed user get to see recommendation based on their liked or disliked content in the past. They can even change their liked or disliked content and view modified recommendation
+Exception : If the user is not logged in.
+Post condition : if the user modifies the database based 
+				on his likes and dislikes, then appropriate changes need to be reflected thereon.
+
+
+
+Name : Rate
+Summary : a registered or subscribed user can rate the 
+		content accordingly
+Actor : Registered user, subscribed user
+Precondition : the user needs to be logged in / should sign up if its new user to view this option.
+Description : the registered or subscribed user can rate a particular content based on his views.
+Exception : if the user views this option when he hasn't signed in.
+Post condition : This rating information needs to be stored in the database if the user has signed in and needs to help in the recommendation system in a more specific manner.
+
+
+Name : Add or delete friend
+Summary : a registered or subscribed user can rate the 
+		content accordingly
+Actor : Registered user, subscribed user
+Precondition : the user needs to be logged in / should sign up if its new user to view this option.
+Description : the registered or subscribed user can add or delete friends. He can share a particular content with his friends and can share his views.
+Exception : if the user views this option when he hasn't signed in. If the user has already deleted/added a particular friend
+Post condition : If a user deletes a particular friend and tries to delete again, then an error page could be displayed. Similarly if a user has already added a friend, then he can be alerted that the particular action has already been made. database updation needs to happen as and when changes are made.
+
+Name : Delete Search Query
+Summary : helps in deleting a search query
+Actor : subscribed user
+Precondition : the user needs to be a subscribed member.
+Description : The subscribed user can delete a search 
+			query if he does not want the search to modify the recommendation.
+Exception : If the user is not subscribed user.
+Post condition : if the user is not subscribed user and clicks on this option, then he could be redirected to subscription page to subscribe to the page.
+
+
+
+Name : Subscription
+Summary : helps user renew his subscription
+Actor : subscribed user
+Pre conditon : the user needs to be a subscribed user with less than 1 month left in subscription time.
+Description : when the user clicks the subscription link, he can renew his subscription to the system and continue to enjoy the desired benefits.
+Exception : None.
+Post condition : A message is shown telling that he has succesfully renewed subscription.
+
+
+
+Name : Content
+Summary : view the overall content shared in the database
+Actor : admin
+Precondition : Needs to be a priviliged user/admin and should have already logged in.
+Description : The admin can view all the contents being shared in the recommendation system . He can take action against users sharing offensive content and can either temporarily/permanently ban the user.
+Exception : if the user is not an admin
+Post condition : If the user is not an admin and clicks
+				on this button, then he can be given an error exception.
+
+
+
+Name : Start or Stop 
+Summary : State of the database at a particular time
+Actor : database
+Precondition : None
+Description : This indicates the state of the database. 
+				if the database system is under maintainence then the state of the database is stopped and restarted later on.
+Exception : If a particular user queries during 	
+			maintainence.
+Post condition : A page displaying the reason for outage
+				be shown to all the users querying during this time.
+
+
+
+Name : Recommend
+Summary : Recommending the content to a particular user
+Actor : database
+Description : The database needs to have the logic for
+			 recommending the content for a particular user. the database needs to modify as and when the recommendation is fine tuned
+Exception : If a particular user does not get 
+			recommendation.
+Post condition : if a particular user does not get 
+					recommendation, then appropriate message needs to be sent a message to modify the entire recommendation logic.
+	

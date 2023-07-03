@@ -1,0 +1,219 @@
+Name: Add friend
+Summary: Sends a friend request to another user. If the other user accepts, 
+         he is added to the senders friend list. The friend can now be used 
+         by the recommendation engine for further recommendations. 
+         If the sender is blocked or reported by the receiver, no one gets a notificaiton.
+Actor: Registered User.
+Precondition: The user should be logged in.
+              He should be viewing the profile of the person he wants to add.
+              He shouldn't be friends with the user already. 
+              There shouldn't be a pending request from either side.
+Main Path: The user clicks the add friend button.
+           A friend request is sent.
+           The receiver sees this friend request.
+           The receiver can choose to accept it or ignore it.
+           If it is accepted, both the users are friends to each other,
+           and appear on each others friend lists.
+Exception: The receiver ignores the request.
+           The receiver has blocked/reported the sender.
+           The sender/receiver has reached the maximum limit of friends(
+               the maximum limit is more for subscribed users)
+Postcondition: In case of the main path, the database is updated that they are both friends. 
+               They appear on each other's friend list.
+               If the receiver ignores the request, no notification is sent. The sender can still send a request again.
+               If the receiver has blocked/reported the sender, no one gets a notification. 
+               The sender won't be able to send a request again.
+               If the maximum number of friends is reached, 
+               the sender is sent a notification that this is this case.
+
+
+Name: Remove friend.
+Summary: Removes a friend of a user. They will no longer appear on either user's friend list or 
+         be considered in the recommendation which considers only friends.
+Actor: Registered User.
+Precondition: The user should be logged in.
+              The user should be friends with the user he wants to remove.
+              He should be viewing the profile of the person he wants to remove.
+Main Path: The user clicks the remove friend button.
+           The friend is removed.
+Exception: No exceptions
+Postcondition: The database is updated that they are not friends anymore.
+               The users aren't shown in each others friend list.
+
+
+Name: View friends.
+Summary: The friends of a particular user are shown to him.
+Actor: Registered User.
+Precondition: The user should be logged in.
+              He should be in his profile
+Main Path: The user clicks the view friends button.
+           The user is shown with a list of his friends in alphabetical order.
+Exception: No exception.
+Postcondition: The user is shown a list of his friends.
+
+
+Name: Send message.
+Summary: Sends a message to a particular user. 
+         If the receiver has blocked/reported the sender, the receiver doesn't get the message.
+Actor: Registered User.
+Precondition: The user should be logged in.
+              He should be viewing the profile of the person he wants to message.
+Main Path: The user clicks the send message button.
+           He is shown a window where he can type the message.
+           The user types in the message.
+           He clicks the send button.
+Exception: The receiver has blocked/reported the user.
+Postcondition: In the main path, the message is sent to the receiver and he can view it. 
+               The database is updated to reflect this.
+               In the exception, from the senders point of view, 
+               it looks like he has sent the message successfully.
+               But the receiever doesn't know about it.
+
+            
+Name: View messages
+Summary: The user is shown the messages sent and received(
+         Something like the gmail inbox and sent tabs)
+Actor: Regsitered User,
+Precondition: The user must be logged in.
+              He should be viewing his profile.
+Main Path: The user clicks the view messages button.
+           The user is shown the messages in chronological order.
+Exception: No exception.
+Postcondition: The user is shown a list of messages in chronological order.
+               He has an option to view only sent/received messages.
+
+
+Name: Block User.
+Summary: The user can block another user. He will not receive any 
+         messages/friend requests from the blocked user.
+Actor: Registered User.
+Precondition: The user must be logged in.
+              The user must be viewing the profile of the user he wants to block.
+              The user must not be blocked already.
+Main Path: He clicks the block user button.
+           The user is blocked.
+Exception: No exception.
+Postcondition: The database is updated to reflect that the user has been blocked.
+               The user who is blocked can no longer send any messages/friend requets to
+               the user who blocked him.
+               The user will not have an option to block the user again.
+               He will be given an option to unblock the user.
+
+Name: Report User.
+Summary: This is used for a more serious offence, i.e. in cases of cyber bullying. 
+         An admin will be notified if a user is reported, and he can take appropriate action.
+Actor: Registered User.
+Precondition: The user must be logged in.
+              The user must be viewing the profile of the user he wants to report.
+              The user must not be reported already.
+Main Path: The user clicks the report button.
+           He is shown a window where he types out the reason for reporting the user.
+           He is shown a message asking if he's sure that he wants to report the user.
+           He clicks Ok.
+           The user is reported.
+Exception: The user doesn't give any reason for reporting the other user.
+           The user clicks 'no' when asked if he's sure to report the user.
+Postcondition: In the main path, the user is reported, one of the admins get a notification.
+               The database is updated to reflect the same.
+               If the user doesn't give a reason, he is not allowed the submit the report. The 
+               field is marked as required.
+               If the user clicks 'no', the report box is closed, 
+               and he is shown the previous screen
+               
+
+
+Name: Create Group.
+Summary: A user can create a group where he invites people with similar interests.
+         This can be used a discussion forum, where people can talk about recommendations 
+         for users in the group, new releases etc.
+Actor: Registered User.
+Precondition: The user should be logged in.
+              He should be on the 'groups' page.
+Main Path: The user clicks the create group button.
+           He is shown a window where he has to fill details like name of the group, category,
+           genre's etc.
+           He enters the details.
+           A group is created with him as the owner of the group.
+Exception: A group already exists with the same name.
+           The name of the group or category is left empty.
+Postcondition: In the main path, a group is created, this information is added to the database.
+               The user who created the group is the owner of the group and 
+               has more privileges within the group.
+               If the group name already exists, he is shown an error message.
+               He remains in the same window.
+               If the group name/category is empty, he is shown an error message.
+               He remains in the same window.
+
+Name: Post on group
+Summary: The user can add a post to the group which they are a member of.
+Actor: Normal member of group.
+Precondition: The user must be a member of the group.
+              The user must be logged in.
+              The user must be be in the group page.
+Main Path: The user clicks on the add post button.
+           The user is shown a window where he can type a title and the body.
+           The user enters the title and the body.
+           The user clicks post.
+Exception: Any field is empty.
+Postcondition: A post is added to the group which can be viewed by all members of the group.
+               The information related to the post is added to the database.
+               This post now shows up on the view own posts of the user.
+               If any field is empty, he is shown an error message and he stays on the same page.
+
+Name: View own posts.
+Summary: The user views the posts which he has posted himself. He can edit/remove these posts.
+Actor: Normal member of the group.
+Precondition: The user must be a member of the group.
+              The user must be logged in.
+              The user must be be in the group page.
+Main Path: The user clicks on the view posts button.
+           The user is shown all/some of the posts depending on the screen resolution, in chronological order.
+           The user can edit/delete these posts.
+           In case of edit, he is shown the message body, which he can edit and save.
+           In case of delete, the post is removed.
+Exception: No exception.
+Postcondition: The user is shown his posts.
+               If the user edits a post, that post is edited and everyone sees the edited post.
+               The database is updated with this.
+               If the user deletes a post, that post is deleted and no one can see the post anymore.
+               The database is updated with this.
+               
+               
+
+Name: Change owner.
+Summary: This is used in case the owner of the group can't perform his duties anymore. He an assign a new owner.
+Actor: Owner of the group.
+Precondition: The user must be an owner of the group.
+              The user must be logged in.
+              The user must be be in the group settings page.
+Main Path: The user clicks on the change owner button.
+           A message pops up asking if he's sure he wants to change owner.
+           The user clicks ok.
+           He is given an input field where he can enter the username of the new owner.
+           He enters the username and clicks change owner button.
+           He is given another message asking if he's sure.
+           He clicks ok.
+Exception: The username does not exist.
+           He clicks no during one of the message prompts.
+Postcondition: In the main path, the owner is changed. The new owner gets a message. 
+               The old owner becomes a normal member of the group.
+               If the username does not exist, a message is shown and he remains on the same screen.
+               If he clicks no in either of the message prompts, he is taken the group home page.
+               
+Name: Delete group.
+Summary: This is used to delete the group. No one can view the group anymore except the admin.
+Actor: Owner of the group.
+Precondition: The user must be an owner of the group.
+              The user must be logged in.
+              The user must be be in the group settings page.
+Main Path: The user clicks delete group button.
+           He is shown a message asking if he's sure that he wants to delete the group and that the action is irreversible.
+           He presses ok.
+           He is asked to enter the name of the group to confirm.
+           He clicks ok.
+Exception: He cancels.
+           He enters wrong name.
+Postcondition: In the main case, the group and everything related to it are deleted. The group no longer appears anywhere.
+               Another group can be made with the deleted groups name. All the posts are deleted.  The database is updated.
+               If he cancels, he is redirected to the settings page.
+               If he enters the wrong name, an error message is shown and he remains in the same window.

@@ -1,0 +1,5 @@
+$python EXP4.py
+Enter the values of the item(s) in order: 60 100 120
+Enter the positive weights of the item(s) in order: 10 20 30
+Enter the maximum capacity of the knapsack: 50
+220
