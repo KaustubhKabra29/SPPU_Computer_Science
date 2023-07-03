@@ -1,0 +1,637 @@
+huser@ubuntu-college:~/Desktop/LogfileTut$ export CLASSPATH="$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-client-core-3.2.2.jar:$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-client-common-3.2.2.jar:$HADOOP_HOME/share/hadoop/common/hadoop-common-3.2.2.jar:$HADOOP_HOME/lib/*:~/home/huser/Desktop/LogFileTut/exp_classfile/*"
+huser@ubuntu-college:~/Desktop/LogfileTut$ javac -d '/home/huser/Desktop/LogfileTut/exp_classfile' LogFileMapper.java LogFileReducer.java LogFileCountryDriver.java 
+huser@ubuntu-college:~/Desktop/LogfileTut$ sudo gedit Manifest.txt
+[sudo] password for huser: 
+
+(gedit:59507): Tepl-WARNING **: 22:24:16.402: GVfs metadata is not supported. Fallback to TeplMetadataManager. Either GVfs is not correctly installed or GVfs metadata are not supported on this platform. In the latter case, you should configure Tepl with --disable-gvfs-metadata.
+huser@ubuntu-college:~/Desktop/LogfileTut$ jar help
+Illegal option: h
+Try `jar --help' for more information.
+huser@ubuntu-college:~/Desktop/LogfileTut$ jar --help
+Usage: jar [OPTION...] [ [--release VERSION] [-C dir] files] ...
+jar creates an archive for classes and resources, and can manipulate or
+restore individual classes or resources from an archive.
+
+ Examples:
+ # Create an archive called classes.jar with two class files:
+ jar --create --file classes.jar Foo.class Bar.class
+ # Create an archive using an existing manifest, with all the files in foo/:
+ jar --create --file classes.jar --manifest mymanifest -C foo/ .
+ # Create a modular jar archive, where the module descriptor is located in
+ # classes/module-info.class:
+ jar --create --file foo.jar --main-class com.foo.Main --module-version 1.0
+     -C foo/ classes resources
+ # Update an existing non-modular jar to a modular jar:
+ jar --update --file foo.jar --main-class com.foo.Main --module-version 1.0
+     -C foo/ module-info.class
+ # Create a multi-release jar, placing some files in the META-INF/versions/9 directory:
+ jar --create --file mr.jar -C foo classes --release 9 -C foo9 classes
+
+To shorten or simplify the jar command, you can specify arguments in a separate
+text file and pass it to the jar command with the at sign (@) as a prefix.
+
+ Examples:
+ # Read additional options and list of class files from the file classes.list
+ jar --create --file my.jar @classes.list
+
+
+ Main operation mode:
+
+  -c, --create               Create the archive
+  -i, --generate-index=FILE  Generate index information for the specified jar
+                             archives
+  -t, --list                 List the table of contents for the archive
+  -u, --update               Update an existing jar archive
+  -x, --extract              Extract named (or all) files from the archive
+  -d, --describe-module      Print the module descriptor, or automatic module name
+
+ Operation modifiers valid in any mode:
+
+  -C DIR                     Change to the specified directory and include the
+                             following file
+  -f, --file=FILE            The archive file name. When omitted, either stdin or
+                             stdout is used based on the operation
+      --release VERSION      Places all following files in a versioned directory
+                             of the jar (i.e. META-INF/versions/VERSION/)
+  -v, --verbose              Generate verbose output on standard output
+
+ Operation modifiers valid only in create and update mode:
+
+  -e, --main-class=CLASSNAME The application entry point for stand-alone
+                             applications bundled into a modular, or executable,
+                             jar archive
+  -m, --manifest=FILE        Include the manifest information from the given
+                             manifest file
+  -M, --no-manifest          Do not create a manifest file for the entries
+      --module-version=VERSION    The module version, when creating a modular
+                             jar, or updating a non-modular jar
+      --hash-modules=PATTERN Compute and record the hashes of modules 
+                             matched by the given pattern and that depend upon
+                             directly or indirectly on a modular jar being
+                             created or a non-modular jar being updated
+  -p, --module-path          Location of module dependence for generating
+                             the hash
+
+ Operation modifiers valid only in create, update, and generate-index mode:
+
+  -0, --no-compress          Store only; use no ZIP compression
+
+ Other options:
+
+  -?, -h, --help[:compat]    Give this, or optionally the compatibility, help
+      --help-extra           Give help on extra options
+      --version              Print program version
+
+ An archive is a modular jar if a module descriptor, 'module-info.class', is
+ located in the root of the given directories, or the root of the jar archive
+ itself. The following operations are only valid when creating a modular jar,
+ or updating an existing non-modular jar: '--module-version',
+ '--hash-modules', and '--module-path'.
+
+ Mandatory or optional arguments to long options are also mandatory or optional
+ for any corresponding short options.
+
+huser@ubuntu-college:~/Desktop/LogfileTut$ jar -cvfm analyzelogs.jar Manifest.txt LogFileCountry/*.class
+added manifest
+adding: LogFileCountry/LogFileCountryDriver.class(in = 1668) (out= 810)(deflated 51%)
+adding: LogFileCountry/LogFileMapper.class(in = 1713) (out= 646)(deflated 62%)
+adding: LogFileCountry/LogFileReducer.class(in = 1577) (out= 632)(deflated 59%)
+huser@ubuntu-college:~/Desktop/LogfileTut$ jps
+59664 Jps
+57106 NameNode
+57794 NodeManager
+57237 DataNode
+57414 SecondaryNameNode
+57659 ResourceManager
+huser@ubuntu-college:~/Desktop/LogfileTut$ hdfs dfs -mkdir /LogFileExp
+huser@ubuntu-college:~/Desktop/LogfileTut$ hdfs dfs -mkdir /LogFileExp/Input
+huser@ubuntu-college:~/Desktop/LogfileTut$ hdfs dfs -put '/home/huser/Desktop/LogfileTut/log_file.csv' /LogFileExp/Input
+
+huser@ubuntu-college:~/Desktop/LogfileTut$ 
+huser@ubuntu-college:~/Desktop/LogfileTut$ hadoop jar analyzelogs.jar /LogFileExp/Input
+Exception in thread "main" java.lang.UnsupportedClassVersionError: LogFileCountry/LogFileCountryDriver has been compiled by a more recent version of the Java Runtime (class file version 55.0), this version of the Java Runtime only recognizes class file versions up to 52.0
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:756)
+	at java.security.SecureClassLoader.defineClass(SecureClassLoader.java:142)
+	at java.net.URLClassLoader.defineClass(URLClassLoader.java:473)
+	at java.net.URLClassLoader.access$100(URLClassLoader.java:74)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:369)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:363)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:362)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:316)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:236)
+huser@ubuntu-college:~/Desktop/LogfileTut$ hadoop jar analyzelogs.jar /LogFileExp/Input /LogFileExp/output
+Exception in thread "main" java.lang.UnsupportedClassVersionError: LogFileCountry/LogFileCountryDriver has been compiled by a more recent version of the Java Runtime (class file version 55.0), this version of the Java Runtime only recognizes class file versions up to 52.0
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:756)
+	at java.security.SecureClassLoader.defineClass(SecureClassLoader.java:142)
+	at java.net.URLClassLoader.defineClass(URLClassLoader.java:473)
+	at java.net.URLClassLoader.access$100(URLClassLoader.java:74)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:369)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:363)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:362)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:316)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:236)
+huser@ubuntu-college:~/Desktop/LogfileTut$ hadoop jar analyzelogs.jar LogFileCountryDriver /LogFileExp/Input /LogFileExp/output
+Exception in thread "main" java.lang.UnsupportedClassVersionError: LogFileCountry/LogFileCountryDriver has been compiled by a more recent version of the Java Runtime (class file version 55.0), this version of the Java Runtime only recognizes class file versions up to 52.0
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:756)
+	at java.security.SecureClassLoader.defineClass(SecureClassLoader.java:142)
+	at java.net.URLClassLoader.defineClass(URLClassLoader.java:473)
+	at java.net.URLClassLoader.access$100(URLClassLoader.java:74)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:369)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:363)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:362)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:316)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:236)
+huser@ubuntu-college:~/Desktop/LogfileTut$ javac --help
+Usage: javac <options> <source files>
+where possible options include:
+  @<filename>                  Read options and filenames from file
+  -Akey[=value]                Options to pass to annotation processors
+  --add-modules <module>(,<module>)*
+        Root modules to resolve in addition to the initial modules, or all modules
+        on the module path if <module> is ALL-MODULE-PATH.
+  --boot-class-path <path>, -bootclasspath <path>
+        Override location of bootstrap class files
+  --class-path <path>, -classpath <path>, -cp <path>
+        Specify where to find user class files and annotation processors
+  -d <directory>               Specify where to place generated class files
+  -deprecation
+        Output source locations where deprecated APIs are used
+  --enable-preview
+        Enable preview language features. To be used in conjunction with either -source or --release.
+  -encoding <encoding>         Specify character encoding used by source files
+  -endorseddirs <dirs>         Override location of endorsed standards path
+  -extdirs <dirs>              Override location of installed extensions
+  -g                           Generate all debugging info
+  -g:{lines,vars,source}       Generate only some debugging info
+  -g:none                      Generate no debugging info
+  -h <directory>
+        Specify where to place generated native header files
+  --help, -help, -?            Print this help message
+  --help-extra, -X             Print help on extra options
+  -implicit:{none,class}
+        Specify whether or not to generate class files for implicitly referenced files
+  -J<flag>                     Pass <flag> directly to the runtime system
+  --limit-modules <module>(,<module>)*
+        Limit the universe of observable modules
+  --module <module-name>, -m <module-name>
+        Compile only the specified module, check timestamps
+  --module-path <path>, -p <path>
+        Specify where to find application modules
+  --module-source-path <module-source-path>
+        Specify where to find input source files for multiple modules
+  --module-version <version>
+        Specify version of modules that are being compiled
+  -nowarn                      Generate no warnings
+  -parameters
+        Generate metadata for reflection on method parameters
+  -proc:{none,only}
+        Control whether annotation processing and/or compilation is done.
+  -processor <class1>[,<class2>,<class3>...]
+        Names of the annotation processors to run; bypasses default discovery process
+  --processor-module-path <path>
+        Specify a module path where to find annotation processors
+  --processor-path <path>, -processorpath <path>
+        Specify where to find annotation processors
+  -profile <profile>
+        Check that API used is available in the specified profile
+  --release <release>
+        Compile for a specific VM version. Supported targets: 6, 7, 8, 9, 10, 11
+  -s <directory>               Specify where to place generated source files
+  -source <release>
+        Provide source compatibility with specified release
+  --source-path <path>, -sourcepath <path>
+        Specify where to find input source files
+  --system <jdk>|none          Override location of system modules
+  -target <release>            Generate class files for specific VM version
+  --upgrade-module-path <path>
+        Override location of upgradeable modules
+  -verbose                     Output messages about what the compiler is doing
+  --version, -version          Version information
+  -Werror                      Terminate compilation if warnings occur
+
+huser@ubuntu-college:~/Desktop/LogfileTut$ javac --version
+javac 11.0.14.1
+huser@ubuntu-college:~/Desktop/LogfileTut$ java --version
+openjdk 11.0.14.1 2022-02-08
+OpenJDK Runtime Environment (build 11.0.14.1+1-Ubuntu-0ubuntu1.20.04)
+OpenJDK 64-Bit Server VM (build 11.0.14.1+1-Ubuntu-0ubuntu1.20.04, mixed mode, sharing)
+huser@ubuntu-college:~/Desktop/LogfileTut$ sudo apt install openjdk-8-jdk openjdk-8-jre
+[sudo] password for huser: 
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+openjdk-8-jdk is already the newest version (8u312-b07-0ubuntu1~20.04).
+openjdk-8-jre is already the newest version (8u312-b07-0ubuntu1~20.04).
+openjdk-8-jre set to manually installed.
+The following packages were automatically installed and are no longer required:
+  libfwupdplugin1 linux-headers-5.13.0-30-generic linux-hwe-5.13-headers-5.13.0-30 linux-image-5.13.0-30-generic linux-modules-5.13.0-30-generic linux-modules-extra-5.13.0-30-generic
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+huser@ubuntu-college:~/Desktop/LogfileTut$ java -version
+openjdk version "11.0.14.1" 2022-02-08
+OpenJDK Runtime Environment (build 11.0.14.1+1-Ubuntu-0ubuntu1.20.04)
+OpenJDK 64-Bit Server VM (build 11.0.14.1+1-Ubuntu-0ubuntu1.20.04, mixed mode, sharing)
+huser@ubuntu-college:~/Desktop/LogfileTut$ cat >> /etc/environment <<EOL
+> JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+> JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+> EOL
+bash: /etc/environment: Permission denied
+huser@ubuntu-college:~/Desktop/LogfileTut$ sudo cat >> /etc/environment <<EOL
+JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+EOL
+bash: /etc/environment: Permission denied
+huser@ubuntu-college:~/Desktop/LogfileTut$ update-alternatives --config java
+There are 2 choices for the alternative java (providing /usr/bin/java).
+
+  Selection    Path                                            Priority   Status
+------------------------------------------------------------
+* 0            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1111      auto mode
+  1            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1111      manual mode
+  2            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1081      manual mode
+
+Press <enter> to keep the current choice[*], or type selection number: 2
+update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java to provide /usr/bin/java (java) in manual mode
+update-alternatives: error: error creating symbolic link '/etc/alternatives/java.dpkg-tmp': Permission denied
+huser@ubuntu-college:~/Desktop/LogfileTut$ java -version
+openjdk version "11.0.14.1" 2022-02-08
+OpenJDK Runtime Environment (build 11.0.14.1+1-Ubuntu-0ubuntu1.20.04)
+OpenJDK 64-Bit Server VM (build 11.0.14.1+1-Ubuntu-0ubuntu1.20.04, mixed mode, sharing)
+huser@ubuntu-college:~/Desktop/LogfileTut$ update-alternatives --config javac
+There are 2 choices for the alternative javac (providing /usr/bin/javac).
+
+  Selection    Path                                          Priority   Status
+------------------------------------------------------------
+* 0            /usr/lib/jvm/java-11-openjdk-amd64/bin/javac   1111      auto mode
+  1            /usr/lib/jvm/java-11-openjdk-amd64/bin/javac   1111      manual mode
+  2            /usr/lib/jvm/java-8-openjdk-amd64/bin/javac    1081      manual mode
+
+Press <enter> to keep the current choice[*], or type selection number: 2
+update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/bin/javac to provide /usr/bin/javac (javac) in manual mode
+update-alternatives: error: error creating symbolic link '/etc/alternatives/javac.dpkg-tmp': Permission denied
+huser@ubuntu-college:~/Desktop/LogfileTut$ update-java-alternatives --set /usr/lib/jvm/java-1.8.0-openjdk-amd64
+update-java-alternatives: no root privileges
+huser@ubuntu-college:~/Desktop/LogfileTut$ sudo update-java-alternatives --set /usr/lib/jvm/java-1.8.0-openjdk-amd64
+update-alternatives: error: no alternatives for mozilla-javaplugin.so
+update-java-alternatives: plugin alternative does not exist: /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/IcedTeaPlugin.so
+huser@ubuntu-college:~/Desktop/LogfileTut$ java --version
+Unrecognized option: --version
+Error: Could not create the Java Virtual Machine.
+Error: A fatal exception has occurred. Program will exit.
+huser@ubuntu-college:~/Desktop/LogfileTut$ java -version
+openjdk version "1.8.0_312"
+OpenJDK Runtime Environment (build 1.8.0_312-8u312-b07-0ubuntu1~20.04-b07)
+OpenJDK 64-Bit Server VM (build 25.312-b07, mixed mode)
+huser@ubuntu-college:~/Desktop/LogfileTut$ update-javac-alternatives --set /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
+
+Command 'update-javac-alternatives' not found, did you mean:
+
+  command 'update-java-alternatives' from deb java-common (0.72)
+
+Try: sudo apt install <deb name>
+
+huser@ubuntu-college:~/Desktop/LogfileTut$ update-alternatives --config javac
+There are 2 choices for the alternative javac (providing /usr/bin/javac).
+
+  Selection    Path                                          Priority   Status
+------------------------------------------------------------
+  0            /usr/lib/jvm/java-11-openjdk-amd64/bin/javac   1111      auto mode
+  1            /usr/lib/jvm/java-11-openjdk-amd64/bin/javac   1111      manual mode
+* 2            /usr/lib/jvm/java-8-openjdk-amd64/bin/javac    1081      manual mode
+
+Press <enter> to keep the current choice[*], or type selection number: 2
+huser@ubuntu-college:~/Desktop/LogfileTut$ javac  -d . LogFileMapper.java LogFileReducer.java LogFileCountryDriver.java 
+huser@ubuntu-college:~/Desktop/LogfileTut$ jar -cvfm analyzelogs.jar Manifest.txt LogFileCountry/*.class
+added manifest
+adding: LogFileCountry/LogFileCountryDriver.class(in = 1677) (out= 825)(deflated 50%)
+adding: LogFileCountry/LogFileMapper.class(in = 1713) (out= 645)(deflated 62%)
+adding: LogFileCountry/LogFileReducer.class(in = 1580) (out= 635)(deflated 59%)
+huser@ubuntu-college:~/Desktop/LogfileTut$ hadoop jar analyzelogs.jar /LogFileExp/Input /LogFileExp/Output
+2022-04-12 22:51:25,988 INFO client.RMProxy: Connecting to ResourceManager at /127.0.0.1:8032
+2022-04-12 22:51:27,403 INFO client.RMProxy: Connecting to ResourceManager at /127.0.0.1:8032
+2022-04-12 22:51:35,208 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+2022-04-12 22:51:36,276 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/huser/.staging/job_1649777619248_0001
+2022-04-12 22:51:39,085 INFO mapred.FileInputFormat: Total input files to process : 1
+2022-04-12 22:51:40,281 INFO mapreduce.JobSubmitter: number of splits:2
+2022-04-12 22:51:40,821 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1649777619248_0001
+2022-04-12 22:51:40,823 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2022-04-12 22:51:42,337 INFO conf.Configuration: resource-types.xml not found
+2022-04-12 22:51:42,337 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2022-04-12 22:52:55,956 INFO impl.YarnClientImpl: Submitted application application_1649777619248_0001
+2022-04-12 22:52:58,540 INFO mapreduce.Job: The url to track the job: http://ubuntu-college:8088/proxy/application_1649777619248_0001/
+2022-04-12 22:52:58,584 INFO mapreduce.Job: Running job: job_1649777619248_0001
+2022-04-12 22:57:02,946 INFO mapreduce.Job: Job job_1649777619248_0001 running in uber mode : false
+2022-04-12 22:57:03,272 INFO mapreduce.Job:  map 0% reduce 0%
+2022-04-12 23:00:09,974 INFO mapreduce.Job:  map 83% reduce 0%
+2022-04-12 23:00:27,106 INFO mapreduce.Job:  map 100% reduce 0%
+2022-04-12 23:01:05,301 INFO mapreduce.Job:  map 100% reduce 100%
+2022-04-12 23:01:08,520 INFO mapreduce.Job: Job job_1649777619248_0001 completed successfully
+2022-04-12 23:01:24,647 INFO mapreduce.Job: Counters: 54
+	File System Counters
+		FILE: Number of bytes read=26793
+		FILE: Number of bytes written=757031
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=162964
+		HDFS: Number of bytes written=3838
+		HDFS: Number of read operations=11
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Data-local map tasks=2
+		Total time spent by all maps in occupied slots (ms)=326847
+		Total time spent by all reduces in occupied slots (ms)=46144
+		Total time spent by all map tasks (ms)=326847
+		Total time spent by all reduce tasks (ms)=46144
+		Total vcore-milliseconds taken by all map tasks=326847
+		Total vcore-milliseconds taken by all reduce tasks=46144
+		Total megabyte-milliseconds taken by all map tasks=334691328
+		Total megabyte-milliseconds taken by all reduce tasks=47251456
+	Map-Reduce Framework
+		Map input records=1295
+		Map output records=1295
+		Map output bytes=24197
+		Map output materialized bytes=26799
+		Input split bytes=206
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=227
+		Reduce shuffle bytes=26799
+		Reduce input records=1295
+		Reduce output records=227
+		Spilled Records=2590
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=478
+		CPU time spent (ms)=3920
+		Physical memory (bytes) snapshot=582180864
+		Virtual memory (bytes) snapshot=7585071104
+		Total committed heap usage (bytes)=403177472
+		Peak Map Physical memory (bytes)=218886144
+		Peak Map Virtual memory (bytes)=2526470144
+		Peak Reduce Physical memory (bytes)=147075072
+		Peak Reduce Virtual memory (bytes)=2533343232
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=162758
+	File Output Format Counters 
+		Bytes Written=3838
+huser@ubuntu-college:~/Desktop/LogfileTut$ hdfs dfs -cat /LogFileExp/Output/part-00000
+10.1.1.236 	7
+10.1.181.142 	14
+10.1.232.31 	5
+10.10.55.142 	14
+10.102.101.66 	1
+10.103.184.104 	1
+10.103.190.81 	53
+10.103.63.29 	1
+10.104.73.51 	1
+10.105.160.183 	1
+10.108.91.151 	1
+10.109.21.76 	1
+10.11.131.40 	1
+10.111.71.20 	8
+10.112.227.184 	6
+10.114.74.30 	1
+10.115.118.78 	1
+10.117.224.230 	1
+10.117.76.22 	12
+10.118.19.97 	1
+10.118.250.30 	7
+10.119.117.132 	23
+10.119.33.245 	1
+10.119.74.120 	1
+10.12.113.198 	2
+10.12.219.30 	1
+10.120.165.113 	1
+10.120.207.127 	4
+10.123.124.47 	1
+10.123.35.235 	1
+10.124.148.99 	1
+10.124.155.234 	1
+10.126.161.13 	7
+10.127.162.239 	1
+10.128.11.75 	10
+10.13.42.232 	1
+10.130.195.163 	8
+10.130.70.80 	1
+10.131.163.73 	1
+10.131.209.116 	5
+10.132.19.125 	2
+10.133.222.184 	12
+10.134.110.196 	13
+10.134.242.87 	1
+10.136.84.60 	5
+10.14.2.86 	8
+10.14.4.151 	2
+10.140.139.116 	1
+10.140.141.1 	9
+10.140.67.116 	1
+10.141.221.57 	5
+10.142.203.173 	7
+10.143.126.177 	32
+10.144.147.8 	1
+10.15.208.56 	1
+10.15.23.44 	13
+10.150.212.239 	14
+10.150.227.16 	1
+10.150.24.40 	13
+10.152.195.138 	8
+10.153.23.63 	2
+10.153.239.5 	25
+10.155.95.124 	9
+10.156.152.9 	1
+10.157.176.158 	1
+10.164.130.155 	1
+10.164.49.105 	8
+10.164.95.122 	10
+10.165.106.173 	14
+10.167.1.145 	19
+10.169.158.88 	1
+10.170.178.53 	1
+10.171.104.4 	1
+10.172.169.53 	18
+10.174.246.84 	3
+10.175.149.65 	1
+10.175.204.125 	15
+10.177.216.164 	6
+10.179.107.170 	2
+10.181.38.207 	13
+10.181.87.221 	1
+10.185.152.140 	1
+10.186.56.126 	16
+10.186.56.183 	1
+10.187.129.140 	6
+10.187.177.220 	1
+10.187.212.83 	1
+10.187.28.68 	1
+10.19.226.186 	2
+10.190.174.142 	10
+10.190.41.42 	5
+10.191.172.11 	1
+10.193.116.91 	1
+10.194.174.4 	7
+10.198.138.192 	1
+10.199.103.248 	2
+10.199.189.15 	1
+10.2.202.135 	1
+10.200.184.212 	1
+10.200.237.222 	1
+10.200.9.128 	2
+10.203.194.139 	10
+10.205.72.238 	2
+10.206.108.96 	2
+10.206.175.236 	1
+10.206.73.206 	7
+10.207.190.45 	17
+10.208.38.46 	1
+10.208.49.216 	4
+10.209.18.39 	9
+10.209.54.187 	3
+10.211.47.159 	10
+10.212.122.173 	1
+10.213.181.38 	7
+10.214.35.48 	1
+10.215.222.114 	1
+10.216.113.172 	48
+10.216.134.214 	1
+10.216.227.195 	16
+10.217.151.145 	10
+10.217.32.16 	1
+10.218.16.176 	8
+10.22.108.103 	4
+10.220.112.1 	34
+10.221.40.89 	5
+10.221.62.23 	13
+10.222.246.34 	1
+10.223.157.186 	11
+10.225.137.152 	1
+10.225.234.46 	1
+10.226.130.133 	1
+10.229.60.23 	1
+10.230.191.135 	6
+10.231.55.231 	1
+10.234.15.156 	1
+10.236.231.63 	1
+10.238.230.235 	1
+10.239.100.52 	1
+10.239.52.68 	4
+10.24.150.4 	5
+10.24.67.131 	13
+10.240.144.183 	15
+10.240.170.50 	1
+10.241.107.75 	1
+10.241.9.187 	1
+10.243.51.109 	5
+10.244.166.195 	5
+10.245.208.15 	20
+10.246.151.162 	3
+10.247.111.104 	9
+10.247.175.65 	1
+10.247.229.13 	1
+10.248.24.219 	1
+10.248.36.117 	3
+10.249.130.132 	3
+10.25.132.238 	2
+10.25.44.247 	6
+10.250.166.232 	1
+10.27.134.23 	1
+10.30.164.32 	1
+10.30.47.170 	8
+10.31.225.14 	7
+10.32.138.48 	11
+10.32.247.175 	4
+10.32.55.216 	12
+10.33.181.9 	8
+10.34.233.107 	1
+10.36.200.176 	1
+10.39.45.70 	2
+10.39.94.109 	4
+10.4.59.153 	1
+10.4.79.47 	15
+10.41.170.233 	9
+10.41.40.17 	1
+10.42.208.60 	1
+10.43.81.13 	1
+10.46.190.95 	10
+10.48.81.158 	5
+10.5.132.217 	1
+10.5.148.29 	1
+10.50.226.223 	9
+10.50.41.216 	3
+10.52.161.126 	1
+10.53.58.58 	1
+10.54.242.54 	10
+10.54.49.229 	1
+10.56.48.40 	16
+10.59.42.194 	11
+10.6.238.124 	6
+10.61.147.24 	1
+10.61.161.218 	1
+10.61.23.77 	8
+10.61.232.147 	3
+10.62.78.165 	2
+10.63.233.249 	7
+10.64.224.191 	13
+10.66.208.82 	2
+10.69.20.85 	26
+10.70.105.238 	1
+10.70.238.46 	6
+10.72.137.86 	6
+10.72.208.27 	1
+10.73.134.9 	4
+10.73.238.200 	1
+10.73.60.200 	1
+10.73.64.91 	1
+10.74.218.123 	1
+10.75.116.199 	1
+10.76.143.30 	1
+10.76.68.178 	16
+10.78.95.24 	8
+10.80.10.131 	10
+10.80.215.116 	17
+10.81.134.180 	1
+10.82.30.199 	63
+10.82.64.235 	1
+10.84.236.242 	1
+10.87.209.46 	1
+10.87.88.214 	1
+10.88.204.177 	1
+10.89.178.62 	1
+10.89.244.42 	1
+10.94.196.42 	1
+10.95.136.211 	4
+10.95.232.88 	1
+10.98.156.141 	1
+10.99.228.224 	1
+huser@ubuntu-college:~/Desktop/LogfileTut$ 
+
