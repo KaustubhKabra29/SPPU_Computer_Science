@@ -1,7 +1,0 @@
-$python EXP3.py
-Enter number of items: 3
-Enter the values of the 3 item(s) in order: 24 15 25
-Enter the positive weights of the 3 item(s) in order: 15 10 18
-Enter maximum weight: 20
-The maximum value of items that can be carried: 31.5
-The fractions in which the items should be taken: [1, 0.5, 0]

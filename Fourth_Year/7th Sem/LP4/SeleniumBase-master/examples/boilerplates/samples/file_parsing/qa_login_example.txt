@@ -1,3 +1,0 @@
-admin,admin_username_qa,admin_password_qa
-employee,employee_username_qa,employee_password_qa
-customer,customer_username_qa,customer_password_qa
