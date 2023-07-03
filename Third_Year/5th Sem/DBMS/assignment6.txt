@@ -1,0 +1,119 @@
+6. Cursors: (All types: Implicit, Explicit, Cursor FOR Loop, Parameterized Cursor)
+Write a PL/SQL block of code using parameterized Cursor that will merge the data available
+in the newly created table N_RollCall with the data available in the table O_RollCall. If the
+data in the first table already exist in the second table then that data should be skipped.
+
+
+create table O_RollCall(roll_no int(10) primary key,name varchar(20),placed_in varchar(20));
+
+desc O_RollCall;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| roll_no   | int         | NO   | PRI | NULL    |       |
+| name      | varchar(20) | YES  |     | NULL    |       |
+| placed_in | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+
+insert into O_RollCall values(10,'Akash','TCS');
+insert into O_RollCall values(11,'Karan','TCS');
+insert into O_RollCall values(12,'Varun','IBM');
+insert into O_RollCall values(13,'Animesh','Google');
+insert into O_RollCall values(77,'Aryan','Zensar');
+
+select * from O_RollCall;
++---------+---------+-----------+
+| roll_no | name    | placed_in |
++---------+---------+-----------+
+|      10 | Akash   | TCS       |
+|      11 | Karan   | TCS       |
+|      12 | Varun   | IBM       |
+|      13 | Animesh | Google    |
+|      77 | Aryan   | Zensar    |
++---------+---------+-----------+
+
+
+
+create table N_RollCall(roll_no int(10),name varchar(20),placed_in varchar(20));
+
+desc N_RollCall;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| roll_no   | int         | YES  |     | NULL    |       |
+| name      | varchar(20) | YES  |     | NULL    |       |
+| placed_in | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+
+insert into N_RollCall values(10,'Akash','TCS');
+insert into N_RollCall values(11,'Karan','TCS');
+insert into N_RollCall values(12,'Varun','IBM');
+insert into N_RollCall values(14,'Alkesh','Microsoft');
+insert into N_RollCall values(15,'Payal','Zensar');
+insert into N_RollCall values(16,'Harsh','Google');
+
+ select * from N_RollCall;
++---------+--------+-----------+
+| roll_no | name   | placed_in |
++---------+--------+-----------+
+|      10 | Akash  | TCS       |
+|      11 | Karan  | TCS       |
+|      12 | Varun  | IBM       |
+|      14 | Alkesh | Microsoft |
+|      15 | Payal  | Zensar    |
+|      16 | Harsh  | Google    |
++---------+--------+-----------+
+
+
+create procedure n1(IN rno1 int)
+    -> begin
+    -> declare rno2 int;
+    -> declare exit_cond boolean;
+    -> declare c1 cursor for select roll_no from O_RollCall where roll_no>rno1;
+    -> declare continue handler for not found set exit_cond = TRUE;
+    -> open c1;
+    -> l1:loop
+    -> fetch c1 into rno2;
+    -> if not exists(select * from N_RollCall where roll_no = rno2) then
+    -> insert into N_RollCall select * from O_RollCall where roll_no = rno2;
+    -> end if;
+    -> if exit_cond then
+    -> close c1;
+    -> leave l1;
+    -> end if;
+    -> end loop l1;
+    -> end;
+    -> //
+
+call n1(10);
+
+select * from N_RollCall;//
++---------+---------+-----------+
+| roll_no | name    | placed_in |
++---------+---------+-----------+
+|      10 | Akash   | TCS       |
+|      11 | Karan   | TCS       |
+|      12 | Varun   | IBM       |
+|      14 | Alkesh  | Microsoft |
+|      15 | Payal   | Zensar    |
+|      16 | Harsh   | Google    |
+|      13 | Animesh | Google    |
++---------+---------+-----------+
+
+
+ call n1(77);
+
+select * from N_RollCall;//
++---------+---------+-----------+
+| roll_no | name    | placed_in |
++---------+---------+-----------+
+|      10 | Akash   | TCS       |
+|      11 | Karan   | TCS       |
+|      12 | Varun   | IBM       |
+|      14 | Alkesh  | Microsoft |
+|      15 | Payal   | Zensar    |
+|      16 | Harsh   | Google    |
+|      13 | Animesh | Google    |
+|      77 | Aryan   | Zensar    |
++---------+---------+-----------+
+

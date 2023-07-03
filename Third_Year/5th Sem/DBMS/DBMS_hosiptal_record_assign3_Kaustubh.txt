@@ -1,0 +1,396 @@
+-- Design at least 10 SQL queries for suitable database application using SQL DML statements:
+-- all types of Joins, Sub-Query and View.
+
+mysql> show databases;
++----------------------------+
+| Database                   |
++----------------------------+
+| 17thsep_procedure_function |    |
+| information_schema         |
+| library                    |
+| mysql                      |
+| performance_schema         |
+| sakila                     |
+| sys                        |
+| world                      |
++----------------------------+
+9 rows in set (0.01 sec)
+
+mysql> create database hosiptal_record_assign3;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use hosiptal_record_assign3;
+Database changed
+
+-- 1.	Create table physician (reg_no primary, name, tel_no, city).
+
+mysql> create table physician(reg_no int primary key , name varchar(20) , tel_no int(10) , city varchar(20));
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+mysql> show tables;
++-----------------------------------+
+| Tables_in_hosiptal_record_assign3 |
++-----------------------------------+
+| physician                         |
++-----------------------------------+
+1 row in set (0.02 sec)
+
+mysql> desc physician;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| reg_no | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| tel_no | int         | YES  |     | NULL    |       |
+| city   | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+-- 2.	Create table patient (p_id int primary, p_name varchar(10), street varchar(10), city varchar(10)).
+
+mysql> create table patient(patient_id int primary key , patient_name varchar(20) , street varchar(20) , city varchar(15));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> show tables;
++-----------------------------------+
+| Tables_in_hosiptal_record_assign3 |
++-----------------------------------+
+| patient                           |
+| physician                         |
++-----------------------------------+
+2 rows in set (0.01 sec)
+
+-- 3.	create table visit ( reg_no int,p_id int,date_of_visit date, fee int, FOREIGN KEY (p_id) REFERENCES patient(p_id), FOREIGN KEY (reg_no) REFERENCES physician(reg_no)).
+
+mysql> create table visit(reg_no int , patient_id int , date_of_visit date , fee int , FOREIGN KEY(patient_id) REFERENCES patient(patient_id) , FOREIGN KEY(reg_no) REFERENCES physician(reg_no));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> show tables;
++-----------------------------------+
+| Tables_in_hosiptal_record_assign3 |
++-----------------------------------+
+| patient                           |
+| physician                         |
+| visit                             |
++-----------------------------------+
+3 rows in set (0.01 sec)
+
+mysql> desc visit;
++---------------+------+------+-----+---------+-------+
+| Field         | Type | Null | Key | Default | Extra |
++---------------+------+------+-----+---------+-------+
+| reg_no        | int  | YES  | MUL | NULL    |       |
+| patient_id    | int  | YES  | MUL | NULL    |       |
+| date_of_visit | date | YES  |     | NULL    |       |
+| fee           | int  | YES  |     | NULL    |       |
++---------------+------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> insert into physician values(101,'DR.Python',987654321,'Jalgaon');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into physician values(102,'DR.Cpp',1234567890,'Pune');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into physician values(103,'DR.Java',753894612,'Mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into physician values(104,'DR.Google',963852741,'Bengaluru');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into physician values(105,'DR.Microsoft',741852999,'Delhi');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into physician values(106,'DR.Tata',963852777,'Kolkata');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into physician values(107,'DR.Modi',741963888,'Surat');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from physician;
++--------+--------------+------------+-----------+
+| reg_no | name         | tel_no     | city      |
++--------+--------------+------------+-----------+
+|    101 | DR.Python    |  987654321 | Jalgaon   |
+|    102 | DR.Cpp       | 1234567890 | Pune      |
+|    103 | DR.Java      |  753894612 | Mumbai    |
+|    104 | DR.Google    |  963852741 | Bengaluru |
+|    105 | DR.Microsoft |  741852999 | Delhi     |
+|    106 | DR.Tata      |  963852777 | Kolkata   |
+|    107 | DR.Modi      |  741963888 | Surat     |
++--------+--------------+------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> insert into patient values(1,'Kaustubh','Ganesh Colony Rd','Jalgaon');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(2,'Himanshu','Mahabad Rd','Jalgaon');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into patient values(3,'Onasvee','Airport Rd','Pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(4,'Harsh','Sargate Rd','Pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(5,'Akash','Thane Rd','Mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(6,'Vaishnavi','Powai Rd','Mumbai');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into patient values(7,'Ankit','MG Rd','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(8,'Chris','Commercial Rd','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(9,'Hiddleston','Noida Rd','Delhi');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(10,'Mark','New Delhi Rd','Delhi');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(11,'Scarlett','Bose Rd','Kolkata');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(12,'Benedict','Banerjee Rd','Kolkata');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into patient values(13,'RDJ','Narendra Rd','Surat');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into patient values(14,'Tom','Shah Rd','Surat');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from patient;
++------------+--------------+------------------+-----------+
+| patient_id | patient_name | street           | city      |
++------------+--------------+------------------+-----------+
+|          1 | Kaustubh     | Ganesh Colony Rd | Jalgaon   |
+|          2 | Himanshu     | Mahabad Rd       | Jalgaon   |
+|          3 | Onasvee      | Airport Rd       | Pune      |
+|          4 | Harsh        | Sargate Rd       | Pune      |
+|          5 | Akash        | Thane Rd         | Mumbai    |
+|          6 | Vaishnavi    | Powai Rd         | Mumbai    |
+|          7 | Ankit        | MG Rd            | Bengaluru |
+|          8 | Chris        | Commercial Rd    | Bengaluru |
+|          9 | Hiddleston   | Noida Rd         | Delhi     |
+|         10 | Mark         | New Delhi Rd     | Delhi     |
+|         11 | Scarlett     | Bose Rd          | Kolkata   |
+|         12 | Benedict     | Banerjee Rd      | Kolkata   |
+|         13 | RDJ          | Narendra Rd      | Surat     |
+|         14 | Tom          | Shah Rd          | Surat     |
++------------+--------------+------------------+-----------+
+14 rows in set (0.00 sec)
+
+mysql> insert into visit values(101,1,'2021-09-01',1000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(101,2,'2021-09-02',2000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(102,3,'2021-09-03',3000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(102,4,'2021-09-04',4000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(103,5,'2021-09-05',5000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into visit values(103,6,'2021-09-06',6000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(104,7,'2021-09-07',7000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(104,8,'2021-09-08',8000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(105,9,'2021-09-09',9000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(105,10,'2021-09-10',10000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(106,11,'2021-09-11',1000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into visit values(106,12,'2021-09-12',2000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(107,13,'2021-09-13',3000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into visit values(107,14,'2021-09-14',4000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from visit;
++--------+------------+---------------+-------+
+| reg_no | patient_id | date_of_visit | fee   |
++--------+------------+---------------+-------+
+|    101 |          1 | 2021-09-01    |  1000 |
+|    101 |          2 | 2021-09-02    |  2000 |
+|    102 |          3 | 2021-09-03    |  3000 |
+|    102 |          4 | 2021-09-04    |  4000 |
+|    103 |          5 | 2021-09-05    |  5000 |
+|    103 |          6 | 2021-09-06    |  6000 |
+|    104 |          7 | 2021-09-07    |  7000 |
+|    104 |          8 | 2021-09-08    |  8000 |
+|    105 |          9 | 2021-09-09    |  9000 |
+|    105 |         10 | 2021-09-10    | 10000 |
+|    106 |         11 | 2021-09-11    |  1000 |
+|    106 |         12 | 2021-09-12    |  2000 |
+|    107 |         13 | 2021-09-13    |  3000 |
+|    107 |         14 | 2021-09-14    |  4000 |
++--------+------------+---------------+-------+
+14 rows in set (0.00 sec)
+
+-- 4.	Find name and city of patient who visited a physician on 13 Sep 2021.
+
+mysql>  select patient_name,city from patient where patient_id in(select patient_id from visit where date_of_visit='2021-09-13');
++--------------+-------+
+| patient_name | city  |
++--------------+-------+
+| RDJ          | Surat |
++--------------+-------+
+1 row in set (0.01 sec)
+
+-- 5.	Get the name of physician and total number of patients visited him.
+
+mysql> select physician.name ,count(visit.patient_id) as "Total number of visits" from physician, visit where  visit.reg_no=physician.reg_no group by physician.name , physician.name;
++--------------+------------------------+
+| name         | Total number of visits |
++--------------+------------------------+
+| DR.Python    |                      2 |
+| DR.Cpp       |                      2 |
+| DR.Java      |                      2 |
+| DR.Google    |                      2 |
+| DR.Microsoft |                      2 |
+| DR.Tata      |                      2 |
+| DR.Modi      |                      2 |
++--------------+------------------------+
+7 rows in set (0.00 sec)
+
+-- 6.	Get the details of date wise fees collected at clinic group by date_of_visit.
+
+mysql> select date_of_visit as "date" , sum(fee) from visit group by date_of_visit;
++------------+----------+
+| date       | sum(fee) |
++------------+----------+
+| 2021-09-01 |     1000 |
+| 2021-09-02 |     2000 |
+| 2021-09-03 |     3000 |
+| 2021-09-04 |     4000 |
+| 2021-09-05 |     5000 |
+| 2021-09-06 |     6000 |
+| 2021-09-07 |     7000 |
+| 2021-09-08 |     8000 |
+| 2021-09-09 |     9000 |
+| 2021-09-10 |    10000 |
+| 2021-09-11 |     1000 |
+| 2021-09-12 |     2000 |
+| 2021-09-13 |     3000 |
+| 2021-09-14 |     4000 |
++------------+----------+
+14 rows in set (0.00 sec)
+
+-- 7.	Take join of physician and visit (inner, left, right, full outer join) 
+
+mysql> select p.reg_no,p.name,v.date_of_visit FROM physician p INNER JOIN visit v ON p.reg_no=v.reg_no;
++--------+--------------+---------------+
+| reg_no | name         | date_of_visit |
++--------+--------------+---------------+
+|    101 | DR.Python    | 2021-09-01    |
+|    101 | DR.Python    | 2021-09-02    |
+|    102 | DR.Cpp       | 2021-09-03    |
+|    102 | DR.Cpp       | 2021-09-04    |
+|    103 | DR.Java      | 2021-09-05    |
+|    103 | DR.Java      | 2021-09-06    |
+|    104 | DR.Google    | 2021-09-07    |
+|    104 | DR.Google    | 2021-09-08    |
+|    105 | DR.Microsoft | 2021-09-09    |
+|    105 | DR.Microsoft | 2021-09-10    |
+|    106 | DR.Tata      | 2021-09-11    |
+|    106 | DR.Tata      | 2021-09-12    |
+|    107 | DR.Modi      | 2021-09-13    |
+|    107 | DR.Modi      | 2021-09-14    |
++--------+--------------+---------------+
+14 rows in set (0.00 sec)
+
+-- 8.[reg_no, name, patient_id, date_of_visit].
+
+
+
+
+
+-- 9.	Take join of patient and visit (inner, left, right, full outer join) [p_name, city, reg_no, date_of_visit].
+
+mysql> select patient.patient_name , patient.city , visit.reg_no , visit.date_of_visit from patient inner join visit on patient.patient_id=visit.patient_id;
++--------------+-----------+--------+---------------+
+| patient_name | city      | reg_no | date_of_visit |
++--------------+-----------+--------+---------------+
+| Kaustubh     | Jalgaon   |    101 | 2021-09-01    |
+| Himanshu     | Jalgaon   |    101 | 2021-09-02    |
+| Onasvee      | Pune      |    102 | 2021-09-03    |
+| Harsh        | Pune      |    102 | 2021-09-04    |
+| Akash        | Mumbai    |    103 | 2021-09-05    |
+| Vaishnavi    | Mumbai    |    103 | 2021-09-06    |
+| Ankit        | Bengaluru |    104 | 2021-09-07    |
+| Chris        | Bengaluru |    104 | 2021-09-08    |
+| Hiddleston   | Delhi     |    105 | 2021-09-09    |
+| Mark         | Delhi     |    105 | 2021-09-10    |
+| Scarlett     | Kolkata   |    106 | 2021-09-11    |
+| Benedict     | Kolkata   |    106 | 2021-09-12    |
+| RDJ          | Surat     |    107 | 2021-09-13    |
+| Tom          | Surat     |    107 | 2021-09-14    |
++--------------+-----------+--------+---------------+
+14 rows in set (0.00 sec)
+
+mysql> select patient.patient_name , patient.city , visit.reg_no , visit.date_of_visit from patient LEFT join visit on patient.patient_id=visit.patient_id;
++--------------+-----------+--------+---------------+
+| patient_name | city      | reg_no | date_of_visit |
++--------------+-----------+--------+---------------+
+| Kaustubh     | Jalgaon   |    101 | 2021-09-01    |
+| Himanshu     | Jalgaon   |    101 | 2021-09-02    |
+| Onasvee      | Pune      |    102 | 2021-09-03    |
+| Harsh        | Pune      |    102 | 2021-09-04    |
+| Akash        | Mumbai    |    103 | 2021-09-05    |
+| Vaishnavi    | Mumbai    |    103 | 2021-09-06    |
+| Ankit        | Bengaluru |    104 | 2021-09-07    |
+| Chris        | Bengaluru |    104 | 2021-09-08    |
+| Hiddleston   | Delhi     |    105 | 2021-09-09    |
+| Mark         | Delhi     |    105 | 2021-09-10    |
+| Scarlett     | Kolkata   |    106 | 2021-09-11    |
+| Benedict     | Kolkata   |    106 | 2021-09-12    |
+| RDJ          | Surat     |    107 | 2021-09-13    |
+| Tom          | Surat     |    107 | 2021-09-14    |
++--------------+-----------+--------+---------------+
+14 rows in set (0.00 sec)
+
+mysql> select patient.patient_name , patient.city , visit.reg_no , visit.date_of_visit from patient RIGHT join visit on patient.patient_id=visit.patient_id;
++--------------+-----------+--------+---------------+
+| patient_name | city      | reg_no | date_of_visit |
++--------------+-----------+--------+---------------+
+| Kaustubh     | Jalgaon   |    101 | 2021-09-01    |
+| Himanshu     | Jalgaon   |    101 | 2021-09-02    |
+| Onasvee      | Pune      |    102 | 2021-09-03    |
+| Harsh        | Pune      |    102 | 2021-09-04    |
+| Akash        | Mumbai    |    103 | 2021-09-05    |
+| Vaishnavi    | Mumbai    |    103 | 2021-09-06    |
+| Ankit        | Bengaluru |    104 | 2021-09-07    |
+| Chris        | Bengaluru |    104 | 2021-09-08    |
+| Hiddleston   | Delhi     |    105 | 2021-09-09    |
+| Mark         | Delhi     |    105 | 2021-09-10    |
+| Scarlett     | Kolkata   |    106 | 2021-09-11    |
+| Benedict     | Kolkata   |    106 | 2021-09-12    |
+| RDJ          | Surat     |    107 | 2021-09-13    |
+| Tom          | Surat     |    107 | 2021-09-14    |
++--------------+-----------+--------+---------------+
+14 rows in set (0.00 sec)
+
+-- 10.	Create view for date wise fees collected at clinic. Apply operations on view.
+ 
+-- 11.	Create view on patient (p_name, reg_no, date_of_visit).Apply operations on view.

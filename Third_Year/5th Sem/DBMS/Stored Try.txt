@@ -1,0 +1,362 @@
+
+mysql> create database Stored_Procedure_and_Function_Assign6;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use ^C
+mysql> use Stored_Procedure_and_Function_Assign6;
+Database changed
+mysql> create table Stud_Marks(Name varchar(20),Total_Marks int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table Result(Roll_Number int,Name varchar(20),Class varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> Drop table Result;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> Drop table Stud_Marks;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table Stud_Marks(Name varchar(20),Total_Marks int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table Result(Roll_Number int Primary Key Auto Increament ,Name varchar(20),Class varchar(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Auto Increament ,Name varchar(20),Class varchar(20))' at line 1
+mysql> create table Result(Roll_Number int Primary Key,Name varchar(20),Class varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> delimiter //
+mysql> create procedure Grade(IN RNo int,out grade varchar(25))
+    -> begin
+    -> declare Marks int;
+    -> select marks into Marks from Stud_Marks where name = (select name from result where Roll_Number = RNo);
+    -> if Marks>=990 and Marks<=1500 then
+    -> select 'Distinction' into Grade;
+    -> update result set class='Distinction' where Roll_Number = RNo;
+    -> elseif Marks>=900 and Marks<=989 then
+    -> select 'First Class' into Grade;
+    -> update result set class='First CLass' where Roll_Number = RNo;
+    -> elseif Marks>=825 and Marks<=899 then
+    -> select 'Higher Second Class' into Grade;
+    -> update result set class='Higher Second Class' where Roll_Number = RNo;
+    -> else
+    -> select '--' into Grade;
+    -> update result set class = '--' where Roll_Number = RNo;
+    -> end if;
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter
+ERROR:
+DELIMITER must be followed by a 'delimiter' character or string
+mysql> Delimiter //
+mysql> Create function Fuction_Grade(RNo int)
+    -> returns varchar(25)
+    -> deterministic
+    -> begin
+    -> declare Grade varchar(25);
+    -> call Grade(RNo,Grade);
+    -> return Grade;
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Function_Grade(1);
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Function_Grade(1)' at line 1
+mysql> Select Function_Grade(1);
+    -> //
+ERROR 1305 (42000): FUNCTION stored_procedure_and_function_assign6.Function_Grade does not exist
+mysql> Select Fuction_Grade(1);
+    -> //
++------------------+
+| Fuction_Grade(1) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.01 sec)
+
+mysql> Insert into ^C
+mysql> Insert into Stud_Marks value("Kaustubh",1500);
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> Insert into Stud_Marks value("Onasvee",1400);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into Stud_Marks value("Harsh",1300);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into Stud_Marks value("Akash",1200);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into Stud_Marks value("Vaishnavi",1100);
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> Insert into Stud_Marks value("Ankit",1000);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into Stud_Marks value("ItsKK29",990);
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> Insert into Stud_Marks value("Orion",950);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into Stud_Marks value("OrionOriginal",925);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into Stud_Marks value("Lonewolf",905);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into Stud_Marks value("Prisoner",825);
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> Insert into Stud_Marks value("Intersteller",800);
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> Select * from Stud_Marks;
+    -> //
++---------------+-------------+
+| Name          | Total_Marks |
++---------------+-------------+
+| Kaustubh      |        1500 |
+| Onasvee       |        1400 |
+| Harsh         |        1300 |
+| Akash         |        1200 |
+| Vaishnavi     |        1100 |
+| Ankit         |        1000 |
+| ItsKK29       |         990 |
+| Orion         |         950 |
+| OrionOriginal |         925 |
+| Lonewolf      |         905 |
+| Prisoner      |         825 |
+| Intersteller  |         800 |
++---------------+-------------+
+12 rows in set (0.00 sec)
+
+mysql> Select Fuction_Grade(1);
+    -> //
++------------------+
+| Fuction_Grade(1) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select * from Result;
+    -> //
+Empty set (0.00 sec)
+
+mysql> Call Grade(1,Grade);
+    -> //
+ERROR 1054 (42S22): Unknown column 'Grade' in 'field list'
+mysql> Call Grade(1,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(2,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(3,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(4,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(5,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(6,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(7,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(8,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(9,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(10,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(11,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Call Grade(12,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Select * from result;
+    -> //
+Empty set (0.00 sec)
+
+mysql> Selct Function_Grade(5);
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Selct Function_Grade(5)' at line 1
+mysql> Select Function_Grade(5);
+    -> //
+ERROR 1305 (42000): FUNCTION stored_procedure_and_function_assign6.Function_Grade does not exist
+mysql> Select Fuction_Grade(5);
+    -> //
++------------------+
+| Fuction_Grade(5) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(1);
+    -> //
++------------------+
+| Fuction_Grade(1) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(2);
+    -> //
++------------------+
+| Fuction_Grade(2) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(3);
+    -> //
++------------------+
+| Fuction_Grade(3) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(4);
+    -> //
++------------------+
+| Fuction_Grade(4) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(6);
+    -> //
++------------------+
+| Fuction_Grade(6) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(7);
+    -> //
++------------------+
+| Fuction_Grade(7) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(8);
+    -> //
++------------------+
+| Fuction_Grade(8) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(9);
+    -> //
++------------------+
+| Fuction_Grade(9) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(10);
+    -> //
++-------------------+
+| Fuction_Grade(10) |
++-------------------+
+| --                |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(11);
+    -> //
++-------------------+
+| Fuction_Grade(11) |
++-------------------+
+| --                |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> Select Fuction_Grade(12);
+    -> //
++-------------------+
+| Fuction_Grade(12) |
++-------------------+
+| --                |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> Select * From Result;
+    -> //
+Empty set (0.00 sec)
+
+mysql> call Grade(1);
+    -> //
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE stored_procedure_and_function_assign6.Grade; expected 2, got 1
+mysql> call Grade(2);
+    -> //
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE stored_procedure_and_function_assign6.Grade; expected 2, got 1
+mysql> call Grade();
+    -> //
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE stored_procedure_and_function_assign6.Grade; expected 2, got 0
+mysql> call Grade(1,Grade);
+    -> //
+ERROR 1054 (42S22): Unknown column 'Grade' in 'field list'
+mysql> call Grade(1,@Grade);
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Select Fuction_Grade(1);
+    -> //
++------------------+
+| Fuction_Grade(1) |
++------------------+
+| --               |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Select * from Result;
+    -> //
+Empty set (0.00 sec)

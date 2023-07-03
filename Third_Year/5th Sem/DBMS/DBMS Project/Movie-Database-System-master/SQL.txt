@@ -1,0 +1,431 @@
+INSERT INTO Shows
+(Show_Id,Title, Language, Rating, Certification, Budget,Release_Countries,VALUE)
+VALUES
+(null,'Captain America: Civil War', 'English', 7.8, 'PG-13', 250000000,'India','U'),
+(null,'A Quiet Place', 'English', 7.6, 'PG-13', 17000000,'UK','A'),
+(null,'Wonder Woman', 'English', 7.5, 'PG-13', 149000000,'India,UK','A'),
+(null,'La La Land', 'English', 8.1, 'PG-13', 30000000,'India,USA','A'),
+(null,'Stranger Things', 'English', 8.9, 'TV-14', null,'India,Australia','A'),
+(null,'Game of Thrones', 'English', 9.5, 'TV-MA', null,'India,China','U'),
+(null,'Silicon Valley', 'English', 8.6, 'TV-MA', null,'India,Korea','A'),
+(null,'Despicable Me', 'English', 7.7, 'PG', 69000000,'India,Germany','U'),
+(null,'Coco', 'English', 8.4, 'PG', 175000000,'India,France','U'),
+(null,'The Office', 'English', 8.8, 'TV-PG', null,'India,USA','A'),
+(null,'Avengers: Infinity War', 'English', 8.5, 'PG-13', 321000000,'India,Italy','U'),
+(null,'Birdman', 'English', 7.7, 'R', 18000000,'India,Pakistan','A'),
+(null,'Before We Go', 'English', 6.8, 'PG-13', null,'India,Japan','U'),
+(null,'This is Us', 'English', 8.8, 'TV-14', null,'India,UAE','A'),
+(null,'A Walk to Remember', 'English', 7.4, 'PG', 11000000,'India,Sri Lanka','A'),
+(null,'The Notebook', 'English', 7.9, 'PG-13', 29000000,'India,South Africa','U');
+
+('U','U/A','A','PG-13')
+
+INSERT INTO In_Genre
+(Show_Id, Genre_Id)
+VALUES
+  (1,2),
+  (1,3),
+  (4,1),
+  (4,6),
+  (4,2),
+  (5,2),
+  (5,3),
+  (5,8),
+  (6,3),
+  (6,7),
+  (6,1),
+  (7,1),
+  (7,3),
+  (7,6),
+  (8,2),
+  (9,11),
+  (9,2),
+  (9,12),
+  (10,11),
+  (10,6),
+  (10,10),
+  (11,2),
+  (12,1),
+  (12,6),
+  (12,10),
+  (13,2),
+  (13,3),
+  (14,2),
+  (14,3),
+  (14,4),
+  (15,2),
+  (15,3),
+  (15,4),
+  (16,3),
+  (16,4),
+  (17,3),
+  (17,4);
+
+
+INSERT INTO Award
+(Name, Title, Year)
+VALUES
+  ('Golden Globe', 'Best Actress', 2015),
+  ('Oscar', 'Best Actress', 2015),
+  ('Oscar', 'Best Picture', 2015),
+  ('Oscar', 'Best Animated Film', 2018),
+  ('Oscar', 'Best Actress', 2007),
+  ('Golden Globe', 'Best Actress', 2017),
+  ('Oscar', 'Best Actress', 2017),
+  ('Oscar', 'Best Director', 2017),
+  ('Oscar', 'Best Picture', 2017),
+ ('Critics Choice', 'Best Picture', 2016),
+  ('Critics Choice', 'Best Editing', 2016),
+  ('Critics Choice', 'Best Actor', 2016),
+  ('Critics Choice', 'Best Movie', 2018),
+  ('Golden Globe', 'Best TV Series', 2018),
+  ('Critics Choice', 'Best Drama Series', 2018),
+  ('Critics Choice', 'Best Supporting Actor', 2018),
+  ('Critics Choice', 'Best Supporting Actress', 2018);
+
+
+INSERT INTO PersonsNominated
+(Person_Id, Award_Id)
+VALUES
+  (58,29),
+  (62,19),
+  (60,25),
+  (78,29),
+  (77,23),
+  (65,31),
+  (67,32),
+  (74,34),
+  (58,33),
+  (61,26);
+
+INSERT INTO ShowsNominated
+(Show_Id, Award_Id)
+VALUES
+  (4,30),
+  (5,28),
+  (8,32),
+  (9,31),
+  (14,27),
+  (19,26),
+  (12,21);
+
+INSERT INTO Presented_By
+(Award_Id, Organization_Id)
+VALUES
+  (18,1),
+  (19,2),
+  (20,2),
+  (21,2),
+  (22,2),
+  (23,1),
+  (24,2),
+  (25,2),
+  (26, 2),
+  (27,2),
+  (28,2),
+  (29,2),
+  (30,2),
+  (31,1),
+  (32,3),
+  (33,3),
+  (34,3);
+
+CREATE TABLE Actor(
+    Person_Id INTEGER NOT NULL,
+    Screen_Name VARCHAR(30),
+    Stage_Name VARCHAR(30),
+    Net_Worth INTEGER,
+    Since_Year INTEGER,
+    PRIMARY KEY(Person_Id),
+    FOREIGN KEY(Person_Id) REFERENCES Person(Person_Id));
+
+INSERT INTO Actor
+(Person_Id, Net_Worth, Since_Year)
+VALUES
+  (57, 90, 1969),
+  (58, 300, 1970),
+  (59, 30, 2000),
+  (60, 28, 2004),
+  (61, 10, 2004),
+  (62, 15, 1995),
+  (63, 3, 2013),
+  (64, 6, 2008),
+  (65, 13, 2009),
+  (77, 16, 2004),
+  (78, 50, 1995),
+  (79, 20, 2013),
+  (80, 60, 2008),
+  (81, 50, 2009),
+  (82, 10, 2009);
+
+
+INSERT INTO Acting
+(Actor_Id, Show_Id, Role_First_Name, Role_Last_Name)
+VALUES
+  (77,1, 'Emily', null),
+  (58,4, 'Tony', 'Stark'),
+  (78,4, 'Steve', 'Rogers'),
+  (59,5, 'Lee', 'Abbott'),
+  (77,5, 'Evelyn', 'Abbott'),
+  (62,6, 'Diana', null),
+  (79,6, 'Steve', 'Trevor'),
+  (61,7, 'Mia', null),
+  (80,7, 'Sebastian', null),
+  (65,8, 'Eleven', null),
+  (64,9, 'Tyrion', 'Lannister'),
+  (67,9, 'Daenerys', 'Targaryen'),
+  (66,10, 'Dinesh', 'Chugtai'),
+  (81,11, 'Gru', null),
+  (81,13, 'Michael', 'Scott'),
+  (59,13, 'Jim', 'Halpert'),
+  (58,14, 'Tony', 'Stark'),
+  (78,14, 'Steve', 'Rogers'),
+  (61,15, 'Sam', null),
+  (78,16, 'Nick', null),
+  (82,17, 'Rebecca', 'Pearson'),
+  (82,18, 'Jamie', 'Sullivan'),
+  (80,19, 'Noah', null);
+
+CREATE TABLE Acting(
+    Actor_Id INTEGER NOT NULL,
+    Show_Id INTEGER NOT NULL,
+    Role_First_Name VARCHAR(50),
+    Role_Last_Name VARCHAR(50),
+    PRIMARY KEY(Actor_Id,Show_Id),
+    FOREIGN KEY(Actor_Id) REFERENCES Person(Person_Id),
+    FOREIGN KEY(Show_Id) REFERENCES Shows(Show_Id));
+
+CREATE TABLE Director(
+    Person_Id INTEGER NOT NULL,
+    Direction_Type VARCHAR(10),
+    Since_Year INTEGER,
+    PRIMARY KEY(Person_Id),
+    CHECK (Direction_Type IN('Music','Movie','Dance','Art')),
+    FOREIGN KEY(Person_Id) REFERENCES Person(Person_Id) 
+);
+
+INSERT INTO Director
+(Person_Id, Direction_Type,Since_Year)
+VALUES
+  (59, 'Movie', 2010),
+  (60, 'Movie', 1994),
+  (84, 'Movie', 1994),
+  (63, 'Movie', 1995),
+  (69, 'Music', 1998),
+  (68, 'Movie', 2009),
+  (70, 'Movie', 2005),
+  (71, 'Movie', 2005),
+  (78, 'Movie', 2014);
+
+CREATE TABLE Direction(
+    Director_Id INTEGER NOT NULL,
+    Show_Id INTEGER NOT NULL,
+    PRIMARY KEY(Director_Id,Show_Id),
+    FOREIGN KEY(Director_Id) REFERENCES Person(Person_Id),
+    FOREIGN KEY(Show_Id) REFERENCES Shows(Show_Id) 
+);
+
+INSERT INTO Direction
+(Director_Id, Show_Id)
+VALUES
+  (59,5),
+  (60,4),
+  (63,6),
+  (68,7),
+  (69,9),
+  (70, 8),
+  (71, 8),
+  (78,16);
+
+INSERT INTO Producer
+(Person_Id)
+VALUES
+  (59),
+  (60),
+  (63);
+
+INSERT INTO Produces
+(Production_company_Id, Show_Id)
+VALUES
+  (3,7),
+  (2,6),
+  (1,4),
+  (1,14);
+
+INSERT INTO Owns
+(Producer_Id, Production_company_Id)
+VALUES
+  (59,3),
+  (63,1);
+
+INSERT INTO Writer
+(Person_Id)
+VALUES
+  (68),
+  (70),
+  (71),
+  (72);
+
+INSERT INTO Written
+(Writer_Id, Show_Id)
+VALUES
+  (68,7),
+  (70,8),
+  (71,8),
+  (72,1);
+
+INSERT INTO Cinematographer
+(Person_Id)
+VALUES
+  (73),
+  (74);
+
+INSERT INTO Shooting
+(Cinematographer_Id, Show_Id)
+VALUES
+  (73,6),
+  (74,5);
+INSERT INTO Editor
+(Person_Id)
+VALUES
+  (83);
+
+INSERT INTO Editing
+(Editor_Id, Show_Id, Software_used)
+VALUES
+  (83,7,'Adobe');
+
+INSERT INTO Distributor
+(Person_Id)
+VALUES
+  (59),
+  (60),
+  (63);
+
+INSERT INTO Distributing
+(Distributor_Id, Show_Id)
+VALUES
+  (59,5),
+  (60,4),
+  (63,6);
+
+INSERT INTO User
+(Person_Id, User_Id)
+VALUES
+  (75, 'ItsKK29'),
+  (76, 'prisoner627');
+
+INSERT INTO Critic
+(Person_Id, User_Id)
+VALUES
+ (75, 'ItsKK29');
+INSERT INTO Regular_User
+(Person_Id, User_Id)
+VALUES
+  (76, 'prisoner627');
+
+INSERT INTO Reviews
+  (Review_Id, User_Id, Show_Id, UP_Votes, Down_Votes, Rating, Review_Description, Reviwed_Date)
+VALUES
+  (1,'prisoner627', 1, 5, 0, 4.5, 'very good movie, mush watch',  '2021-11-24'),
+  (2, 'ItsKK29', 6, 5, 0, 3.5, 'the best female superhero movie of all timer',  '2021-11-24'),
+  (3, 'ItsKK29', 8, 5, 0, 5, 'the show keeps you insanely captivated throughout',  '2021-11-24'),
+  (4, 'prisoner627', 4, 5, 0, 5, 'the best marvel movie so far',  '2021-11-24');
+
+CREATE TABLE Movies(
+    Show_Id INTEGER NOT NULL,
+    Duration FLOAT,
+    Release_Date DATE,
+    Year INTEGER,
+    PRIMARY KEY(Show_Id),
+    FOREIGN KEY(Show_Id) REFERENCES Shows(Show_Id)
+);
+
+INSERT INTO Movies
+(Show_Id, Duration, Release_Date, Year)
+VALUES
+(1, 109, '2006-06-30', 2006),
+(4, 147, '2016-05-06', 2016),
+(5, 90, '2018-04-06', 2018),
+(6, 141, '2017-06-02', 2017),
+(7, 128, '2016-12-25', 2016),
+(11, 95, '2010-07-09', 2010),
+(12, 105, '2017-11-22', 2017),
+(14, 149, '2018-04-27', 2018),
+(15, 119, '2014-11-14', 2014),
+(16, 95, '2015-07-21', 2015),
+(17, 102, '2002-01-25', 2002),
+(18, 124, '2004-06-25', 2004);
+
+
+CREATE TABLE Box_Office_Collections(
+    Movie_Id INTEGER NOT NULL,
+    First_Week_Collections FLOAT,
+    Overall_USA_Collections FLOAT,
+    Overall_Worldwide_Collections FLOAT,
+    Currency VARCHAR(10),
+    PRIMARY KEY(Movie_Id),
+    FOREIGN KEY(Movie_Id) REFERENCES Shows(Show_Id)
+);
+
+INSERT INTO Box_Office_Collections
+(Movie_Id, First_Week_Collections, Overall_USA_Collections, Overall_Worldwide_Collections, Currency)
+VALUES
+(1, 27537244, 124740460, 326551094, 'Dollars'),
+(4, 179139142, 408084349,1153304495, 'Dollars'),
+(5, 50203562, 188024361,332583447, 'Dollars'),
+(6, 103251471, 412563408, 821763408, 'Dollars'),
+(7, 881104, 151101803, 44609357, 'Dollars'),
+(11, 56397125, 251513985, 543113985, 'Dollars'),
+(12, 50802605, 209726015, 807082196, 'Dollars'),
+(14, 257698183, 678815482, 2046900111, 'Dollars'),
+(15, 424397, 42340598, 103215094, 'Dollars'),
+(16, 3225, 37047, null, 'Dollars'),
+(17, 12177488, 41227069, null, 'Dollars'),
+(19, 13464745, 81001787, 116072707, 'Dollars');
+
+INSERT INTO TVSeries
+(Show_Id, Start_Date, End_Date, Air_Channel, Air_Day, Air_Time)
+VALUES
+(8, '2016-07-15', null, 'Netflix', null, null),
+(9, '2011-04-11', null, 'HBO', 'Sunday', '21:00:00'),
+(10, '2014-04-06', null, 'HBO', 'Sunday', null),
+(13, '2016-09-20', null, 'NBC', 'Tuesday', '21:00:00'),
+(17, '2005-03-24', '2013-05-16', 'NBC', 'Thursday', null);
+
+INSERT INTO Seasons
+(Season_Id, Season_Name, Start_Date, End_Date, Season_number, Show_Id)
+VALUES
+(1, null,  '2016-07-15', null, 1, 6),
+(4, null,  '2017-10-27', null, 2, 6),
+(5, null,  '2011-04-17',  '2011-06-19', 1, 7),
+(6, null,  '2012-04-01',  '2012-06-03', 2, 7),
+(7, null,  '2013-03-31',  '2013-06-09', 3, 7),
+(8, null,  '2014-04-06',  '2014-06-15', 4, 7),
+(9, null,  '2015-04-12',  '2015-06-14', 5, 7),
+(10, null,  '2016-04-24',  '2016-06-26', 6, 7),
+(11, null,  '2017-07-16',  '2017-08-27', 7, 7),
+(12, null,  '2014-06-16',  '2014-06-01', 1, 8),
+(13, null,  '2015-04-16',  '2015-06-14', 2, 8),
+(14, null,  '2016-04-16',  '2016-06-26', 3, 8),
+(15, null,  '2017-03-16',  '2017-06-25', 4, 8),
+(16, null,  '2018-05-15',  '2018-05-13', 5, 8);
+
+
+INSERT INTO Episodes
+(Episode_Id, Episode_Title, Air_Date, Duration, Season_ID)
+VALUES
+(1, null,  '2016-07-15', null, 6),
+(2, null,  '2017-10-27', null, 6),
+(3, null,  '2011-04-17',  20,  7),
+(4, null,  '2012-04-01',  20,  7),
+(5, null,  '2013-03-31',  20,  7),
+(6, null,  '2014-04-06',  22,  7),
+(7, null,  '2015-04-12',  31,  7),
+(8, null,  '2016-04-24',  55,  7),
+(9, null,  '2017-07-16',  10,  7),
+(10, null,  '2014-06-16',  44, 8),
+(11, null,  '2015-04-16',  16, 8),
+(12, null,  '2016-04-16',  33, 8),
+(13, null,  '2017-03-16',  23, 8),
+(14, null,  '2018-05-15',  45, 8);

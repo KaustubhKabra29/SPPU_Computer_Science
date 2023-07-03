@@ -1,0 +1,225 @@
+4. Unnamed PL/SQL code block: Use of Control structure and Exception handling is
+mandatory.
+Suggested Problem statement:
+Consider Tables:
+1. Borrower(Roll_no, Name, DateofIssue, NameofBook, Status)
+2. Fine(Roll_no,Date,Amt)
+ Accept Roll_no & NameofBook from user.
+ Check the number of days (from date of issue),
+ If days are between 15 to 30 then fine amount will be Rs 5per day.
+ If no. of days>30, per day fine will be Rs 50 per day & for days less than 30, Rs. 5 per
+day.
+ After submitting the book, status will change from I to R.
+ If condition of fine is true, then details will be stored into fine table.
+ Also handles the exception by named exception handler or user define exception handler
+
+
+
+---------------------------------------------------------------------------------------------
+mysql>create database assignment4;
+Database Created
+
+mysql> use assignment4
+Database changed
+
+mysql> create table borrower(Roll_no int primary key,Name varchar(20),DateofIssue date,NameofBook varchar(20),Status int);
+Query OK, 0 rows affected (0.41 sec)
+
+mysql> desc borrower;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Roll_no     | int         | NO   | PRI | NULL    |       |
+| Name        | varchar(20) | NO   |     | NULL    |       |
+| DateofIssue | date        | NO   |     | NULL    |       |
+| NameofBook  | varchar(20) | NO   |     | NULL    |       |
+| Status      | varchar(1)  | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.31 sec)
+
+mysql> create table fine(Roll_no int,Date date,Amt int,foreign key(Roll_no) references borrower(Roll_no));//
+Query OK, 0 rows affected (0.41 sec)
+
+mysql> desc fine;
+    -> //
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| Roll_no | int  | YES  | MUL | NULL    |       |
+| Date    | date | YES  |     | NULL    |       |
+| Amt     | int  | YES  |     | NULL    |       |
++---------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> show tables
+    -> ;
++-----------------------+
+| Tables_in_assignment4 |
++-----------------------+
+| borrower              |
+| fine                  |
++-----------------------+
+2 rows in set (0.00 sec)
+
+mysql>INSERT INTO `assignment4`.`borrower` (`Roll_no`, `Name`, `DateofIssue`, `NameofBook`, `Status`) VALUES ('1', 'Akash', '2021-11-01', 'Java Programming', 'I');
+1 rows affected (0.00 sec)
+
+mysql>INSERT INTO `assignment4`.`borrower` (`Roll_no`, `Name`, `DateofIssue`, `NameofBook`, `Status`) VALUES ('2', 'Harsh', '2021-12-10', 'DBMS', 'I');
+1 rows affected (0.00 sec)
+
+mysql>INSERT INTO `assignment4`.`borrower` (`Roll_no`, `Name`, `DateofIssue`, `NameofBook`, `Status`) VALUES ('3', 'Kaustubh', '2021-09-08', 'Python Basics', 'I');
+1 rows affected (0.00 sec)
+
+mysql>INSERT INTO `assignment4`.`borrower` (`Roll_no`, `Name`, `DateofIssue`, `NameofBook`, `Status`) VALUES ('4', 'Onasvee', '2021-12-12', 'Computer Networking', 'I');
+1 rows affected (0.00 sec)
+
+mysql>INSERT INTO `assignment4`.`borrower` (`Roll_no`, `Name`, `DateofIssue`, `NameofBook`, `Status`) VALUES ('5', 'Karan', '2021-07-01', 'Graphics', 'I');
+1 rows affected (0.00 sec)
+
+mysql> select * from borrower;
++---------+----------+-------------+---------------------+--------+
+| Roll_no | Name     | DateofIssue | NameofBook          | Status |
++---------+----------+-------------+---------------------+--------+
+|       1 | Akash    | 2021-11-01  | Java Programming    | I      |
+|       2 | Harsh    | 2021-12-10  | DBMS                | I      |
+|       3 | Kaustubh | 2021-09-08  | Python Basics       | I      |
+|       4 | Onasvee  | 2021-12-12  | Computer Networking | I      |
+|       5 | Karan    | 2021-07-01  | Graphics            | I      |
++---------+----------+-------------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from fine;
+Empty set (0.00 sec)
+
+mysql> create procedure fine_calculation(IN rno int(3),bkname char(20))
+    ->      begin
+    ->      declare i_date date;
+    ->      declare diff int;
+    ->      declare fine_amt int;
+    ->      declare exit handler for sqlexception select 'Table not Found';
+    ->      select DateofIssue into i_date from borrower where Roll_no = rno and NameofBook=bkname;
+    ->      select datediff(curdate(),i_date) into diff;
+    ->      if(diff>15 and diff<=30) then
+    ->      set fine_amt = diff*5;
+    ->      insert into fine values(rno,curdate(),fine_amt);
+    ->      elseif(diff>30) then
+    ->      set fine_amt = 15*5 + (diff-30)*50;
+    ->      insert into fine values(rno,curdate(),fine_amt);
+    ->      end if;
+    ->      update borrower set Status = 'R' where Roll_no = rno and NameofBook =bkname;
+    ->      end;
+    ->      //
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql>delimiter ;
+
+mysql> select * from borrower;
++---------+----------+-------------+---------------------+--------+
+| Roll_no | Name     | DateofIssue | NameofBook          | Status |
++---------+----------+-------------+---------------------+--------+
+|       1 | Akash    | 2021-11-11  | Java Programming    | I      |
+|       2 | Harsh    | 2021-11-01  | DBMS                | I      |
+|       3 | Kaustubh | 2021-09-08  | Python Basics       | I      |
+|       4 | Onasvee  | 2021-10-12  | Computer Networking | I      |
+|       5 | Karan    | 2021-07-01  | Graphics            | I      |
++---------+----------+-------------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+
+mysql> call fine_calculation(3,'Python Basics');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from fine;
++---------+------------+------+
+| Roll_no | Date       | Amt  |
++---------+------------+------+
+|       3 | 2021-11-09 | 1675 |
++---------+------------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from borrower;
++---------+----------+-------------+---------------------+--------+
+| Roll_no | Name     | DateofIssue | NameofBook          | Status |
++---------+----------+-------------+---------------------+--------+
+|       1 | Akash    | 2021-11-11  | Java Programming    | I      |
+|       2 | Harsh    | 2021-11-01  | DBMS                | I      |
+|       3 | Kaustubh | 2021-09-08  | Python Basics       | R      |
+|       4 | Onasvee  | 2021-10-12  | Computer Networking | I      |
+|       5 | Karan    | 2021-07-01  | Graphics            | I      |
++---------+----------+-------------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> call fine_calculation(4,'Computer Networking');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from fine;
++---------+------------+------+
+| Roll_no | Date       | Amt  |
++---------+------------+------+
+|       3 | 2021-11-09 | 1675 |
+|       4 | 2021-11-09 |  140 |
++---------+------------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from borrower;
++---------+----------+-------------+---------------------+--------+
+| Roll_no | Name     | DateofIssue | NameofBook          | Status |
++---------+----------+-------------+---------------------+--------+
+|       1 | Akash    | 2021-11-11  | Java Programming    | I      |
+|       2 | Harsh    | 2021-11-01  | DBMS                | I      |
+|       3 | Kaustubh | 2021-09-08  | Python Basics       | R      |
+|       4 | Onasvee  | 2021-10-12  | Computer Networking | R      |
+|       5 | Karan    | 2021-07-01  | Graphics            | I      |
++---------+----------+-------------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> call fine_calculation(5,'Graphics');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from fine;
++---------+------------+------+
+| Roll_no | Date       | Amt  |
++---------+------------+------+
+|       3 | 2021-11-09 | 1675 |
+|       4 | 2021-11-09 |  140 |
+|       5 | 2021-11-09 | 5125 |
++---------+------------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from borrower;
++---------+----------+-------------+---------------------+--------+
+| Roll_no | Name     | DateofIssue | NameofBook          | Status |
++---------+----------+-------------+---------------------+--------+
+|       1 | Akash    | 2021-11-11  | Java Programming    | I      |
+|       2 | Harsh    | 2021-11-01  | DBMS                | I      |
+|       3 | Kaustubh | 2021-09-08  | Python Basics       | R      |
+|       4 | Onasvee  | 2021-10-12  | Computer Networking | R      |
+|       5 | Karan    | 2021-07-01  | Graphics            | R      |
++---------+----------+-------------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+
+mysql> ALTER TABLE `assignment4`.`borrower` CHANGE COLUMN `Roll_no` `Roll` INT NOT NULL ;
+    -> //
+Query OK, 0 rows affected (1.67 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> call fine_calculation(2,'DBMS');//
++----------------+
+| Table not Found |
++----------------+
+| Table not Found |
++----------------+
+1 row in set (0.49 sec)
+
+Query OK, 0 rows affected (0.50 sec)
+
+
+
+
+
+
+
+
+
+

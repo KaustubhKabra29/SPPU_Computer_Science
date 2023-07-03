@@ -1,0 +1,1000 @@
+Group-A
+Practical Number 2(A)
+
+Design and Develop SQL DDL statements which demonstrate the use of SQL objects such as Table, View, Index, Sequence, Synonym, different constraints etc.
+
+mysql> create database T20WorldCup_2021_GrpA_Prac2;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> use T20WorldCup_2021_GrpA_Prac2;
+Database changed
+
+mysql> show tables;
+Empty set (0.03 sec)
+
+mysql> create table Teams(team_id varchar(30) primary key,team_name varchar(20) not null,no_of_win int(5),no_of_loses int(5));
+Query OK, 0 rows affected, 2 warnings (0.04 sec)
+
+mysql> alter table Teams add net_run_rate float(10,3);
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> desc Teams;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| team_id      | varchar(30) | NO   | PRI | NULL    |       |
+| team_name    | varchar(20) | NO   |     | NULL    |       |
+| no_of_win    | int         | YES  |     | NULL    |       |
+| no_of_loses  | int         | YES  |     | NULL    |       |
+| net_run_rate | float(10,3) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table Players(player_id varchar(10) primary key, team_id varchar(10),FOREIGN KEY(team_id) REFERENCES Teams(team_id),no_of_matches int(10),
+total_runs int(5),total_wickets int(5),strike_rate float(3,2),economy float(2,2),no_of_sixes int(3),no_of_fours int(3),no_of_half_centuries int(3));
+Query OK, 0 rows affected, 12 warnings (0.03 sec)
+
+mysql> desc Players;
++----------------------+-------------+------+-----+---------+-------+
+| Field                | Type        | Null | Key | Default | Extra |
++----------------------+-------------+------+-----+---------+-------+
+| player_id            | varchar(10) | NO   | PRI | NULL    |       |
+| team_id              | varchar(10) | YES  | MUL | NULL    |       |
+| no_of_matches        | int         | YES  |     | NULL    |       |
+| total_runs           | int         | YES  |     | NULL    |       |
+| total_wickets        | int         | YES  |     | NULL    |       |
+| strike_rate          | float(3,2)  | YES  |     | NULL    |       |
+| economy              | float(2,2)  | YES  |     | NULL    |       |
+| no_of_sixes          | int         | YES  |     | NULL    |       |
+| no_of_fours          | int         | YES  |     | NULL    |       |
+| no_of_half_centuries | int         | YES  |     | NULL    |       |
++----------------------+-------------+------+-----+---------+-------+
+10 rows in set (0.01 sec)
+
+mysql> Create table Batsman(team_id varchar(10), FOREIGN KEY(team_id) REFERENCES Teams(team_id),first_name varchar(20),last_name varchar(20),type varchar(30),
+batsman_player_id varchar(10), FOREIGN KEY(batsman_player_id) REFERENCES Players(player_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc Batsman;
++-------------------+-------------+------+-----+---------+-------+
+| Field             | Type        | Null | Key | Default | Extra |
++-------------------+-------------+------+-----+---------+-------+
+| team_id           | varchar(10) | YES  | MUL | NULL    |       |
+| first_name        | varchar(20) | YES  |     | NULL    |       |
+| last_name         | varchar(20) | YES  |     | NULL    |       |
+| type              | varchar(30) | YES  |     | NULL    |       |
+| batsman_player_id | varchar(10) | YES  | MUL | NULL    |       |
++-------------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> Create table Bowlers(team_id varchar(10), FOREIGN KEY(team_id) REFERENCES Teams(team_id),first_name varchar(20),last_name varchar(20),role varchar(20),type varchar(20)
+style varchar(20),bowler_palyer_id varchar(10),FOREIGN KEY(bowler_player_id) REFERENCES Players(player_id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc Bowlers;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| team_id          | varchar(10) | YES  | MUL | NULL    |       |
+| first_name       | varchar(20) | YES  |     | NULL    |       |
+| last_name        | varchar(20) | YES  |     | NULL    |       |
+| role             | varchar(20) | YES  |     | NULL    |       |
+| type             | varchar(20) | YES  |     | NULL    |       |
+| style            | varchar(20) | YES  |     | NULL    |       |
+| bowler_player_id | varchar(10) | YES  | MUL | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> Create table All_Rounders(team_id varchar(10), FOREIGN KEY(team_id) REFERENCES Teams(team_id),first_name varchar(20),last_name varchar(20),role varchar(20),
+batting_type varchar(30),bowling_type varchar(30),all_rounder_player_id varchar(10),FOREIGN KEY(all_rounder_player_id) REFERENCES Players(player_id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc All_Rounders;
++-----------------------+-------------+------+-----+---------+-------+
+| Field                 | Type        | Null | Key | Default | Extra |
++-----------------------+-------------+------+-----+---------+-------+
+| team_id               | varchar(10) | YES  | MUL | NULL    |       |
+| first_name            | varchar(20) | YES  |     | NULL    |       |
+| last_name             | varchar(20) | YES  |     | NULL    |       |
+| role                  | varchar(20) | YES  |     | NULL    |       |
+| batting_type          | varchar(30) | YES  |     | NULL    |       |
+| bowling_type          | varchar(30) | YES  |     | NULL    |       |
+| all_rounder_player_id | varchar(10) | YES  | MUL | NULL    |       |
++-----------------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> Create table Umpire(umpire_id varchar(15) primary key,umpire_name varchar(50),no_of_matches int(3),country varchar(20));
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+mysql> desc Umpire;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| umpire_id     | varchar(15) | NO   | PRI | NULL    |       |
+| umpire_name   | varchar(50) | YES  |     | NULL    |       |
+| no_of_matches | int         | YES  |     | NULL    |       |
+| country       | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+Create table Matches(match_id int not null AUTO_INCREMENT primary key,match_date date,team_id_1 varchar(15),FOREIGN KEY(team_id_1) REFERENCES Teams(team_id) ,team_id_2 varchar(15),FOREIGN KEY(team_id_2) REFERENCES Teams(team_id) ,venue varchar(40),umpire_id_1 varchar(15),umpire_id_2 varchar(15), FOREIGN KEY(umpire_id_1) REFERENCES Umpire(umpire_id),FOREIGN KEY(umpire_id_2) REFERENCES Umpire(umpire_id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Matches;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| match_id    | int         | NO   | PRI | NULL    | auto_increment |
+| match_date  | date        | YES  |     | NULL    |                |
+| team_id_1   | varchar(15) | YES  | MUL | NULL    |                |
+| team_id_2   | varchar(15) | YES  | MUL | NULL    |                |
+| venue       | varchar(40) | YES  |     | NULL    |                |
+| umpire_id_1 | varchar(15) | YES  | MUL | NULL    |                |
+| umpire_id_2 | varchar(15) | YES  | MUL | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+7 rows in set (0.01 sec)
+
+mysql> show tables;
++---------------------------------------+
+| Tables_in_t20worldcup_2021_grpa_prac2 |
++---------------------------------------+
+| all_rounders                          |
+| batsman                               |
+| bowlers                               |
+| matches                               |
+| players                               |
+| teams                                 |
+| umpire                                |
++---------------------------------------+
+7 rows in set (0.01 sec)
+
+mysql> insert into Teams values('IND','INDIA',3,2,+1.747);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Teams values('Pak','Pakistan',5,0,1.583);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Teams values('NZ','NewZealand',4,1,+1.162);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Teams values('Eng','England',4,1,+2.464);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Teams values('Aus','Australia',4,1,+1.216);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Teams values('RSA','South Africa',4,1,+0.739);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Teams values('Afg','Afghanistan',2,3,+1.053);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Teams values('Nam','Namibia',1,4,-1.890);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Teams values('Sco','Scotland',0,5,-3.543);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Teams values('SL','Sri Lanka',2,3,-0.269);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Teams values('WI','West Indies',1,4,-1.641);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Teams values('Ban','Bangladesh',0,5,-2.383);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Select * From Teams Group By net_run_rate Order By no_of_win DESC;
++---------+--------------+-----------+-------------+--------------+
+| team_id | team_name    | no_of_win | no_of_loses | net_run_rate |
++---------+--------------+-----------+-------------+--------------+
+| Pak     | Pakistan     |         5 |           0 |        1.583 |
+| Aus     | Australia    |         4 |           1 |        1.216 |
+| Eng     | England      |         4 |           1 |        2.464 |
+| NZ      | NewZealand   |         4 |           1 |        1.162 |
+| RSA     | South Africa |         4 |           1 |        0.739 |
+| IND     | INDIA        |         3 |           2 |        1.747 |
+| Afg     | Afghanistan  |         2 |           3 |        1.053 |
+| SL      | Sri Lanka    |         2 |           3 |       -0.269 |
+| Nam     | Namibia      |         1 |           4 |       -1.890 |
+| WI      | West Indies  |         1 |           4 |       -1.641 |
+| Ban     | Bangladesh   |         0 |           5 |       -2.383 |
+| Sco     | Scotland     |         0 |           5 |       -3.543 |
++---------+--------------+-----------+-------------+--------------+
+12 rows in set (0.00 sec)
+
+mysql> insert into Players values('VK18','IND',94,3227,4,137.91,7.14,91,290,29,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('RS45','IND',116,3038,1,139.61,9.97,140,273,24,7);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('KLR01','IND',53,1751,0,143.29,0.0,70,157,15,4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('HP33','IND',54,553,42,146.3,8.23,32,34,0,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('RJ08','IND',55,256,46,113.78,6.99,7,15,0,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('JB93','IND',54,8,66,61.54,6.52,0,1,0,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('BK15','IND',52,57,50,75.0,6.93,0,0,0,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('MS11','IND',17,0,18,,31.56,0.0,9.55,0,0,0,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('BA59','Pak',66,2468,0,130.38,0.0,38,254,24);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('SM18','Pak',121,1933,28,125.92,7.09,69,196,9);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MR16','Pak',48,1279,0,128.8,0.0,38,116,10);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('SA10','Pak',35,19,38,105.56,26.61,1,1,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('KW22','NZ',72,1931,6,122.76,8.34,43,192,13);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MG31','NZ',107,3115,0,136.5,11.0,155,274,18);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('TB18','NZ',39,28,57,73.68,7.17,0,2,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('IS61','NZ',62,78,81,108.33,8.0,5,4,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('TS38','NZ',87,249,106,143.1,8.21,16,16,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('DC88','NZ',20,602,0,139.32,0.0,15,62,4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('AF05','Aus',81,2603,0,148.4,13.5,113,260,15);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('DW31','Aus',86,2452,0,140.11,0.0,93,244,20);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('SS49','Aus',50,858,17,126.55,7.79,21,70,4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('MM08','Aus',34,780,15,122.64,7.47,30,61,5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('GM32','Aus',77,1809,33,156.49,7.44,93,149,9);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MS17','Aus',33,416,10,135.06,8.69,14,39,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('MW13','Aus',53,688,0,123.52,0.0,25,52,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('PC30','Aus',35,60,41,133.33,7.01,4,3,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MS56','Aus',46,83,58,105.06,7.3,2,4,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('AZ63','Aus',55,45,63,91.84,6.85,0,4,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('SS59','Ban',66,1136,9,122.15,9.5,43,113,5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('MD30','Ban',110,1939,33,118.74,7.24,60,150,6);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('SAH75','Ban',94,1894,117,120.56,6.66,38,193,9);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('MR15','Ban',99,1465,0,115.26,0.0,37,122,6);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('LD16','Ban',46,844,0,122.5,0.0,27,80,4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('MR90','Ban',59,53,84,66.25,7.68,3,3,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('TA03','Ban',30,58,21,87.88,7.96,1,6,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('RH34','Ban',28,20,28,55.56,9.45,0,1,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('EM16','Eng',113,2428,0,137.64,0.0,119,184,14);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('LL23','Eng',14,252,8,165.79,6.32,18,13,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('DM29','Eng',36,1239,1,137.21,13.5,41,128,11);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('JR20','Eng',53,1316,0,144.93,0.0,59,136,7);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MA18','Eng',44,529,28,135.29,8.0,24,46,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('CW19','Eng',16,98,15,148.48,7.83,6,4,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('JB51','Eng',63,1190,0,135.84,0.0,49,111,7);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('JB63','Eng',88,2140,0,141.16,0.0,90,184,15);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('SB77','Eng',33,417,0,128.31,0.0,12,39,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('CJ34','Eng',71,296,79,132.74,8.56,14,21,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('AR95','Eng',68,60,74,80.0,7.39,0,4,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MW33','Eng',19,11,26,84.62,8.76,0,1,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('AM04','RSA',20,588,5,147.0,7.44,28,45,6);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into Players values('DM10','RSA',95,1786,0,140.63,0.0,79,119,4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('RvdD72','RSA',34,933,0,130.86,0.0,40,55,6);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('DP29','RSA',22,170,23,161.9,7.77,8,13,1);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into Players values('QdK12','RSA',61,1827,0,135.03,0.0,65,189,11);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('HK45','RSA',28,449,0,142.09,14.0,21,32,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('AN02','RSA',16,8,18,40.0,6.75,0,0,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('KR25','RSA',40,121,49,116.35,8.58,5,11,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('TS26','RSA',47,4,57,21.05,6.74,0,0,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('KC15','Sco',69,1495,5,119.22,6.45,48,158,6);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('GM93','Sco',50,1270,0,146.31,0.0,57,150,7);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('RB44','Sco',73,1693,27,128.26,7.58,54,148,7);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('ML29','Sco',42,428,26,129.7,8.01,22,29,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('CML10','Sco',60,1158,5,110.5,7.21,22,99,7);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MC09','Sco',55,947,0,116.34,0.0,25,90,5);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('SS50','Sco',53,151,61,121.77,8.11,4,9,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MW51','Sco',46,104,56,116.85,6.97,1,11,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MN07','Afg',85,1501,73,142.95,7.24,85,98,4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('AA44','Afg',75,1382,1,110.83,0.0,69,87,4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('NZ01','Afg',68,1232,0,141.28,0.0,65,84,6);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('GN11','Afg',52,559,20,122.59,8.17,25,42,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('MS77','Afg',69,1961,0,133.95,0.0,75,217,11);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('RK19','Afg',56,182,103,123.81,6.21,11,11,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('MUR88','Afg',22,12,32,88.89,6.05,0,1,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('HH66','Afg',25,50,35,108.7,6.4,2,3,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('CG333','WI',79,1899,20,137.51,6.93,124,158,14);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('EL17','WI',50,1423,0,155.52,0.0,110,106,10);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('SH189','WI',42,666,0,118.72,0.0,32,43,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('LS54','WI',68,1527,6,120.71,10.05,68,140,9);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('KP55','WI',93,1468,38,135.55,8.45,96,86,6);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('DB47','WI',91,1255,78,115.14,8.12,55,73,4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('AR12','WI',67,741,39,156.0,9.19,62,42,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('JH98','WI',30,225,23,123.63,8.13,13,12,0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('NP29','WI',46,738,0,125.72,0.0,42,56,3);
+Query OK, 1 row affected (0.01 sec)
+insert into Players values('AF28','SL',29,325,0,93.93,0.0,6,25,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('DS07','SL',56,707,17,107.45,7.47,33,48,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('WH49','SL',32,319,52,119.92,6.22,2,32,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('KJP55','SL',59,1539,0,131.31,0.0,51,144,12);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('DC36','SL',61,950,0,104.51,0.0,19,82,6);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Players values('DC05','SL',39,46,38,73.02,7.89,0,4,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Players values('AD04','SL',31,61,28,85.92,8.2,0,6,0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Select * From Players;
++-----------+---------+---------------+------------+---------------+-------------+---------+-------------+-------------+----------------------+
+| player_id | team_id | no_of_matches | total_runs | total_wickets | strike_rate | economy | no_of_sixes | no_of_fours | no_of_half_centuries |
++-----------+---------+---------------+------------+---------------+-------------+---------+-------------+-------------+----------------------+
+| AA44      | Afg     |            75 |       1382 |             1 |      110.83 |    0.00 |          69 |          87 |                    4 |
+| AD04      | SL      |            31 |         61 |            28 |       85.92 |    8.20 |           0 |           6 |                    0 |
+| AF05      | Aus     |            81 |       2603 |             0 |      148.40 |   13.50 |         113 |         260 |                   15 |
+| AF28      | SL      |            29 |        325 |             0 |       93.93 |    0.00 |           6 |          25 |                    0 |
+| AM04      | RSA     |            20 |        588 |             5 |      147.00 |    7.44 |          28 |          45 |                    6 |
+| AN02      | RSA     |            16 |          8 |            18 |       40.00 |    6.75 |           0 |           0 |                    0 |
+| AR12      | WI      |            67 |        741 |            39 |      156.00 |    9.19 |          62 |          42 |                    1 |
+| AR95      | Eng     |            68 |         60 |            74 |       80.00 |    7.39 |           0 |           4 |                    0 |
+| AZ63      | Aus     |            55 |         45 |            63 |       91.84 |    6.85 |           0 |           4 |                    0 |
+| BA59      | Pak     |            66 |       2468 |             0 |      130.38 |    0.00 |          38 |         254 |                   24 |
+| BK15      | IND     |            52 |         57 |            50 |       75.00 |    6.93 |           0 |           0 |                    0 |
+| CG333     | WI      |            79 |       1899 |            20 |      137.51 |    6.93 |         124 |         158 |                   14 |
+| CJ34      | Eng     |            71 |        296 |            79 |      132.74 |    8.56 |          14 |          21 |                    0 |
+| CML10     | Sco     |            60 |       1158 |             5 |      110.50 |    7.21 |          22 |          99 |                    7 |
+| CW19      | Eng     |            16 |         98 |            15 |      148.48 |    7.83 |           6 |           4 |                    0 |
+| DB47      | WI      |            91 |       1255 |            78 |      115.14 |    8.12 |          55 |          73 |                    4 |
+| DC05      | SL      |            39 |         46 |            38 |       73.02 |    7.89 |           0 |           4 |                    0 |
+| DC36      | SL      |            61 |        950 |             0 |      104.51 |    0.00 |          19 |          82 |                    6 |
+| DC88      | NZ      |            20 |        602 |             0 |      139.32 |    0.00 |          15 |          62 |                    4 |
+| DM10      | RSA     |            95 |       1786 |             0 |      140.63 |    0.00 |          79 |         119 |                    4 |
+| DM29      | Eng     |            36 |       1239 |             1 |      137.21 |   13.50 |          41 |         128 |                   11 |
+| DP29      | RSA     |            22 |        170 |            23 |      161.90 |    7.77 |           8 |          13 |                    1 |
+| DS07      | SL      |            56 |        707 |            17 |      107.45 |    7.47 |          33 |          48 |                    2 |
+| DW31      | Aus     |            86 |       2452 |             0 |      140.11 |    0.00 |          93 |         244 |                   20 |
+| EL17      | WI      |            50 |       1423 |             0 |      155.52 |    0.00 |         110 |         106 |                   10 |
+| EM16      | Eng     |           113 |       2428 |             0 |      137.64 |    0.00 |         119 |         184 |                   14 |
+| GM32      | Aus     |            77 |       1809 |            33 |      156.49 |    7.44 |          93 |         149 |                    9 |
+| GM93      | Sco     |            50 |       1270 |             0 |      146.31 |    0.00 |          57 |         150 |                    7 |
+| GN11      | Afg     |            52 |        559 |            20 |      122.59 |    8.17 |          25 |          42 |                    1 |
+| HH66      | Afg     |            25 |         50 |            35 |      108.70 |    6.40 |           2 |           3 |                    0 |
+| HK45      | RSA     |            28 |        449 |             0 |      142.09 |   14.00 |          21 |          32 |                    3 |
+| HP33      | IND     |            54 |        553 |            42 |      146.30 |    8.23 |          32 |          34 |                    0 |
+| IS61      | NZ      |            62 |         78 |            81 |      108.33 |    8.00 |           5 |           4 |                    0 |
+| JB51      | Eng     |            63 |       1190 |             0 |      135.84 |    0.00 |          49 |         111 |                    7 |
+| JB63      | Eng     |            88 |       2140 |             0 |      141.16 |    0.00 |          90 |         184 |                   15 |
+| JB93      | IND     |            54 |          8 |            66 |       61.54 |    6.52 |           0 |           1 |                    0 |
+| JH98      | WI      |            30 |        225 |            23 |      123.63 |    8.13 |          13 |          12 |                    0 |
+| JR20      | Eng     |            53 |       1316 |             0 |      144.93 |    0.00 |          59 |         136 |                    7 |
+| KC15      | Sco     |            69 |       1495 |             5 |      119.22 |    6.45 |          48 |         158 |                    6 |
+| KJP55     | SL      |            59 |       1539 |             0 |      131.31 |    0.00 |          51 |         144 |                   12 |
+| KLR01     | IND     |            53 |       1751 |             0 |      143.29 |    0.00 |          70 |         157 |                   15 |
+| KP55      | WI      |            93 |       1468 |            38 |      135.55 |    8.45 |          96 |          86 |                    6 |
+| KR25      | RSA     |            40 |        121 |            49 |      116.35 |    8.58 |           5 |          11 |                    0 |
+| KW22      | NZ      |            72 |       1931 |             6 |      122.76 |    8.34 |          43 |         192 |                   13 |
+| LD16      | Ban     |            46 |        844 |             0 |      122.50 |    0.00 |          27 |          80 |                    4 |
+| LL23      | Eng     |            14 |        252 |             8 |      165.79 |    6.32 |          18 |          13 |                    0 |
+| LS54      | WI      |            68 |       1527 |             6 |      120.71 |   10.05 |          68 |         140 |                    9 |
+| MA18      | Eng     |            44 |        529 |            28 |      135.29 |    8.00 |          24 |          46 |                    3 |
+| MC09      | Sco     |            55 |        947 |             0 |      116.34 |    0.00 |          25 |          90 |                    5 |
+| MD30      | Ban     |           110 |       1939 |            33 |      118.74 |    7.24 |          60 |         150 |                    6 |
+| MG31      | NZ      |           107 |       3115 |             0 |      136.50 |   11.00 |         155 |         274 |                   18 |
+| ML29      | Sco     |            42 |        428 |            26 |      129.70 |    8.01 |          22 |          29 |                    1 |
+| MM08      | Aus     |            34 |        780 |            15 |      122.64 |    7.47 |          30 |          61 |                    5 |
+| MN07      | Afg     |            85 |       1501 |            73 |      142.95 |    7.24 |          85 |          98 |                    4 |
+| MR15      | Ban     |            99 |       1465 |             0 |      115.26 |    0.00 |          37 |         122 |                    6 |
+| MR16      | Pak     |            48 |       1279 |             0 |      128.80 |    0.00 |          38 |         116 |                   10 |
+| MR90      | Ban     |            59 |         53 |            84 |       66.25 |    7.68 |           3 |           3 |                    0 |
+| MS11      | IND     |            17 |          0 |            18 |        0.00 |    9.55 |           0 |           0 |                    0 |
+| MS17      | Aus     |            33 |        416 |            10 |      135.06 |    8.69 |          14 |          39 |                    1 |
+| MS56      | Aus     |            46 |         83 |            58 |      105.06 |    7.30 |           2 |           4 |                    0 |
+| MS77      | Afg     |            69 |       1961 |             0 |      133.95 |    0.00 |          75 |         217 |                   11 |
+| MUR88     | Afg     |            22 |         12 |            32 |       88.89 |    6.05 |           0 |           1 |                    0 |
+| MW13      | Aus     |            53 |        688 |             0 |      123.52 |    0.00 |          25 |          52 |                    3 |
+| MW33      | Eng     |            19 |         11 |            26 |       84.62 |    8.76 |           0 |           1 |                    0 |
+| MW51      | Sco     |            46 |        104 |            56 |      116.85 |    6.97 |           1 |          11 |                    0 |
+| NP29      | WI      |            46 |        738 |             0 |      125.72 |    0.00 |          42 |          56 |                    3 |
+| NZ01      | Afg     |            68 |       1232 |             0 |      141.28 |    0.00 |          65 |          84 |                    6 |
+| PC30      | Aus     |            35 |         60 |            41 |      133.33 |    7.01 |           4 |           3 |                    0 |
+| QdK12     | RSA     |            61 |       1827 |             0 |      135.03 |    0.00 |          65 |         189 |                   11 |
+| RB44      | Sco     |            73 |       1693 |            27 |      128.26 |    7.58 |          54 |         148 |                    7 |
+| RH34      | Ban     |            28 |         20 |            28 |       55.56 |    9.45 |           0 |           1 |                    0 |
+| RJ08      | IND     |            55 |        256 |            46 |      113.78 |    6.99 |           7 |          15 |                    0 |
+| RK19      | Afg     |            56 |        182 |           103 |      123.81 |    6.21 |          11 |          11 |                    0 |
+| RS45      | IND     |           116 |       3038 |             1 |      139.61 |    9.97 |         140 |         273 |                   24 |
+| RvdD72    | RSA     |            34 |        933 |             0 |      130.86 |    0.00 |          40 |          55 |                    6 |
+| SA10      | Pak     |            35 |         19 |            38 |      105.56 |   26.61 |           1 |           1 |                    0 |
+| SAH75     | Ban     |            94 |       1894 |           117 |      120.56 |    6.66 |          38 |         193 |                    9 |
+| SB77      | Eng     |            33 |        417 |             0 |      128.31 |    0.00 |          12 |          39 |                    2 |
+| SH189     | WI      |            42 |        666 |             0 |      118.72 |    0.00 |          32 |          43 |                    3 |
+| SM18      | Pak     |           121 |       1933 |            28 |      125.92 |    7.09 |          69 |         196 |                    9 |
+| SS49      | Aus     |            50 |        858 |            17 |      126.55 |    7.79 |          21 |          70 |                    4 |
+| SS50      | Sco     |            53 |        151 |            61 |      121.77 |    8.11 |           4 |           9 |                    0 |
+| SS59      | Ban     |            66 |       1136 |             9 |      122.15 |    9.50 |          43 |         113 |                    5 |
+| TA03      | Ban     |            30 |         58 |            21 |       87.88 |    7.96 |           1 |           6 |                    0 |
+| TB18      | NZ      |            39 |         28 |            57 |       73.68 |    7.17 |           0 |           2 |                    0 |
+| TS26      | RSA     |            47 |          4 |            57 |       21.05 |    6.74 |           0 |           0 |                    0 |
+| TS38      | NZ      |            87 |        249 |           106 |      143.10 |    8.21 |          16 |          16 |                    0 |
+| VK18      | IND     |            94 |       3227 |             4 |      137.91 |    7.14 |          91 |         290 |                   29 |
+| WH49      | SL      |            32 |        319 |            52 |      119.92 |    6.22 |           2 |          32 |                    1 |
++-----------+---------+---------------+------------+---------------+-------------+---------+-------------+-------------+----------------------+
+89 rows in set (0.00 sec)
+
+mysql>insert into Matches values('01','2021/10/23','Aus','RSA','Abu Dhabi','UMP01','UMP02');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/23','Eng','WI','Dubai','UMP03','UMP04');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/24','SL','Ban','Sharjah','UMP05','UMP06');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Matches values(null,'2021/10/24','IND','Pak','Dubai','UMP07','UMP04');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/25','Afg','Sco','Sharjah','UMP08','UMP09');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/26','RSA','WI','Dubai','UMP10','UMP03');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/26','Pak','NZ','Sharjah','UMP02','UMP11');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/27','Eng','Ban','Abu Dhabi','UMP12','UMP01');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Matches values(null,'2021/10/27','Sco','Nam','Sharjah','UMP13','UMP05');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/28','Aus','SL','Dubai','UMP03','UMP14');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Matches values(null,'2021/10/29','WI','Ban','Sharjah','UMP13','UMP05');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/29','Afg','Pak','Dubai','UMP06','UMP15');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Matches values(null,'2021/10/30','RSA','SL','Sharjah','UMP06','UMP09');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/30','Eng','Aus','Dubai','UMP01','UMP04');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/10/31','Afg','Nam','Abu Dhabi','UMP07','UMP16');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Matches values(null,'2021/10/31','IND','NZ','Dubai','UMP04','UMP11');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/01','Eng','SL','Sharjah','UMP13','UMP05');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/02','RSA','Ban','Abu Dhabi','UMP14','UMP10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/02','Pak','Nam','Abu Dhabi','UMP07','UMP15');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/03','NZ','Sco','Dubai','UMP04','UMP16');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/03','IND','Afg','Abu Dhabi','UMP11','UMP10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/04','Aus','Ban','Dubai','UMP01','UMP08');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/04','WI','SL','Abu Dhabi','UMP03','UMP12');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Matches values(null,'2021/11/05','NZ','Nam','Sharjah','UMP09','UMP10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/05','IND','Sco','Dubai','UMP13','UMP04');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/06','Aus','WI','Abu Dhabi','UMP12','UMP14');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Matches values(null,'2021/11/06','Eng','RSA','Sharjah','UMP15','UMP06');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Matches values(null,'2021/11/07','NZ','Afg','Abu Dhabi','UMP12','UMP08');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/07','Pak','Sco','Sharjah','UMP09','UMP13');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Matches values(null,'2021/11/07','IND','Nam','Dubai','UMP14','UMP15');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> Select * From Matches;
++----------+------------+-----------+-----------+-----------+-------------+-------------+
+| match_id | match_date | team_id_1 | team_id_2 | venue     | umpire_id_1 | umpire_id_2 |
++----------+------------+-----------+-----------+-----------+-------------+-------------+
+|        1 | 2021-10-23 | Aus       | RSA       | Abu Dhabi | UMP01       | UMP02       |
+|        2 | 2021-10-23 | Eng       | WI        | Dubai     | UMP03       | UMP04       |
+|        3 | 2021-10-24 | SL        | Ban       | Sharjah   | UMP05       | UMP06       |
+|        4 | 2021-10-24 | IND       | Pak       | Dubai     | UMP07       | UMP04       |
+|        5 | 2021-10-25 | Afg       | Sco       | Sharjah   | UMP08       | UMP09       |
+|        6 | 2021-10-26 | RSA       | WI        | Dubai     | UMP10       | UMP03       |
+|        7 | 2021-10-26 | Pak       | NZ        | Sharjah   | UMP02       | UMP11       |
+|        8 | 2021-10-27 | Eng       | Ban       | Abu Dhabi | UMP12       | UMP01       |
+|        9 | 2021-10-27 | Sco       | Nam       | Sharjah   | UMP13       | UMP05       |
+|       10 | 2021-10-28 | Aus       | SL        | Dubai     | UMP03       | UMP14       |
+|       11 | 2021-10-29 | WI        | Ban       | Sharjah   | UMP13       | UMP05       |
+|       12 | 2021-10-29 | Afg       | Pak       | Dubai     | UMP06       | UMP15       |
+|       13 | 2021-10-30 | RSA       | SL        | Sharjah   | UMP06       | UMP09       |
+|       14 | 2021-10-30 | Eng       | Aus       | Dubai     | UMP01       | UMP04       |
+|       15 | 2021-10-31 | Afg       | Nam       | Abu Dhabi | UMP07       | UMP16       |
+|       16 | 2021-10-31 | IND       | NZ        | Dubai     | UMP04       | UMP11       |
+|       17 | 2021-11-01 | Eng       | SL        | Sharjah   | UMP13       | UMP05       |
+|       18 | 2021-11-02 | RSA       | Ban       | Abu Dhabi | UMP14       | UMP10       |
+|       19 | 2021-11-02 | Pak       | Nam       | Abu Dhabi | UMP07       | UMP15       |
+|       20 | 2021-11-03 | NZ        | Sco       | Dubai     | UMP04       | UMP16       |
+|       21 | 2021-11-03 | IND       | Afg       | Abu Dhabi | UMP11       | UMP10       |
+|       22 | 2021-11-04 | Aus       | Ban       | Dubai     | UMP01       | UMP08       |
+|       23 | 2021-11-04 | WI        | SL        | Abu Dhabi | UMP03       | UMP12       |
+|       24 | 2021-11-05 | NZ        | Nam       | Sharjah   | UMP09       | UMP10       |
+|       25 | 2021-11-05 | IND       | Sco       | Dubai     | UMP13       | UMP04       |
+|       26 | 2021-11-06 | Aus       | WI        | Abu Dhabi | UMP12       | UMP14       |
+|       27 | 2021-11-06 | Eng       | RSA       | Sharjah   | UMP15       | UMP06       |
+|       28 | 2021-11-07 | NZ        | Afg       | Abu Dhabi | UMP12       | UMP08       |
+|       29 | 2021-11-07 | Pak       | Sco       | Sharjah   | UMP09       | UMP13       |
+|       30 | 2021-11-07 | IND       | Nam       | Dubai     | UMP14       | UMP15       |
++----------+------------+-----------+-----------+-----------+-------------+-------------+
+30 rows in set (0.00 sec)
+
+mysql> Select * From Batsman;
++---------+----------------+-------------+------------------+-------------------+
+| team_id | first_name     | last_name   | type             | batsman_player_id |
++---------+----------------+-------------+------------------+-------------------+
+| NZ      | Kane           | Williamson  | Right Handed     | KW22              |
+| NZ      | Martin         | Guptill     | Right Handed     | MG31              |
+| Aus     | Aaron          | Finch       | Right Handed     | AF05              |
+| Aus     | Steven         | Smith       | Right Handed     | SS49              |
+| Aus     | David          | Warner      | Left Handed      | DW31              |
+| Pak     | Babar          | Azam        | Right Handed     | BA59              |
+| Pak     | Fakhar         | Zaman       | Left Handed      | NULL              |
+| NZ      | Devon          | Conway      | (Wk)Left Handed  | DC88              |
+| NZ      | Glenn          | Phillips    | (Wk)Right Handed | NULL              |
+| Aus     | Matthew        | Wade        | (Wk)Left Handed  | MW13              |
+| Pak     | Mohammad       | Rizwan      | (Wk)Right Handed | MR16              |
+| Pak     | Sarfaraz       | Ahmed       | (Wk)Right Handed | SA10              |
+| IND     | Virat          | Kohil       | Right Handed     | VK18              |
+| IND     | Rohit          | Sharma      | Right Handed     | RS45              |
+| IND     | KL             | Rahul       | (Wk)Right Handed | KLR01             |
+| IND     | Ishan          | Kishan      | (Wk)Left Handed  | NULL              |
+| IND     | Rishabh        | Pant        | (Wk)Left Handed  | NULL              |
+| Ban     | Mushfiqur      | Rahim       | (Wk)Right Handed | MR90              |
+| Ban     | Liton          | Das         | (Wk)Right Handed | LD16              |
+| Ban     | Soumya         | Sarkar      | Left Handed      | SS59              |
+| Eng     | Dawid          | Malan       | Left Handed      | DM29              |
+| Eng     | Eoin           | Morgan      | Left Handed      | EM16              |
+| Eng     | Jason          | Roy         | Right Handed     | JR20              |
+| Eng     | Liam           | Livingstone | Right Handed     | LL23              |
+| Eng     | Jonny          | Bairstow    | (Wk)Right Handed | JB51              |
+| Eng     | Jos            | Buttler     | (Wk)Right Handed | JB63              |
+| Eng     | Sam            | Billings    | (Wk)Right Handed | SB77              |
+| RSA     | Quinton        | de Kock     | (Wk)Left Handed  | QdK12             |
+| RSA     | Heinrich       | Klaasen     | (Wk)Right Handed | HK45              |
+| RSA     | Rassie van der | Dussen      | Right Handed     | RvdD72            |
+| RSA     | Aiden          | Markram     | Right Handed     | AM04              |
+| RSA     | David          | Miller      | Left Handed      | DM10              |
+| Sco     | George         | Munsey      | Left Handed      | GM93              |
+| Sco     | Kyle           | Coetzer     | Right Handed     | KC15              |
+| Sco     | Craig          | Wallace     | (Wk)Right Handed | NULL              |
+| Sco     | Matthew        | Cross       | (Wk)Right Handed | MC09              |
+| Afg     | Mohammad       | Shahzad     | (Wk)Right Handed | MS77              |
+| Afg     | Asghar         | Afghan      | Right Handed     | AA44              |
+| Afg     | Najibullah     | Zardran     | Left Handed      | NZ01              |
+| Afg     | Hazratullah    | Zazai       | Left Handed      | NULL              |
+| WI      | Chris          | Gayle       | Left Handed      | CG333             |
+| WI      | Evin           | Lewis       | Left Handed      | EL17              |
+| WI      | Shimron        | Hetmyer     | Left Handed      | SH189             |
+| WI      | Lendl          | Simmons     | Right Handed     | LS54              |
+| WI      | Nicholas       | Pooran      | (Wk)Left Handed  | NP29              |
+| SL      | Kusal          | Perera      | (Wk)Left Handed  | NULL              |
+| SL      | Dinesh         | Chandimal   | (Wk)Right Handed | DC36              |
+| SL      | Bhanuka        | Rajapaksa   | Left Handed      | NULL              |
+| SL      | Avishka        | Fernando    | Left Handed      | AF28              |
+| IND     | Suryakumar     | Yadav       | Right Handed     | NULL              |
++---------+----------------+-------------+------------------+-------------------+
+50 rows in set (0.00 sec)
+
+mysql> Select * From Bowlers;
++---------+--------------+---------------+---------+-----------+-------------+------------------+
+| team_id | first_name   | last_name     | role    | type      | style       | bowler_player_id |
++---------+--------------+---------------+---------+-----------+-------------+------------------+
+| NZ      | Trent        | Boult         | Pacer   | Left Arm  | Fast        | TB18             |
+| NZ      | Kyle         | Jamieson      | Pacer   | Right Arm | medium-fast | NULL             |
+| NZ      | Tim          | Southee       | Pacer   | Right Arm | medium-fast | TS38             |
+| NZ      | Ish          | Sodhi         | Spinner | Right Arm | Legbreak    | IS61             |
+| Aus     | Pat          | Cummins       | Pacer   | Right Arm | medium-fast | PC30             |
+| Aus     | Josh         | Hazlewood     | Pacer   | Right Arm | medium-fast | NULL             |
+| Aus     | Kane         | Richardson    | Pacer   | Right Arm | medium      | NULL             |
+| Aus     | Mitchell     | Starc         | Pacer   | Left Arm  | Fast        | MS56             |
+| Aus     | Adam         | Zampa         | Spinner | Right Arm | Legbreak    | AZ63             |
+| Aus     | Mitchell     | Swepson       | Spinner | Right Arm | Legbreak    | NULL             |
+| Pak     | Haris        | Rauf          | Pacer   | Right Arm | Fast        | NULL             |
+| Pak     | Shaheen      | Afridi        | Pacer   | Left Arm  | medium-fast | NULL             |
+| Pak     | Hasan        | Ali           | Pacer   | Right Arm | medium-fast | NULL             |
+| IND     | Shardul      | Thakur        | Pacer   | Right Arm | medium      | NULL             |
+| IND     | Mohammed     | Shami         | Pacer   | Right Arm | medium-fast | MS11             |
+| IND     | Bhuvneshwar  | Kumar         | Pacer   | Right Arm | medium-fast | BK15             |
+| IND     | Jasprit      | Bumrah        | Pacer   | Right Arm | Fast        | JB93             |
+| IND     | Varun        | Chakaravarthy | Spinner | Right Arm | Legbreak    | NULL             |
+| IND     | Rahul        | Chahar        | Spinner | Right Arm | Legbreak    | NULL             |
+| Ban     | Rubel        | Hossain       | Pacer   | Right Arm | medium-fast | RH34             |
+| Ban     | Taskin       | Ahmed         | Pacer   | Right Arm | medium-fast | TA03             |
+| Ban     | Mustafizur   | Rahman        | Pacer   | Left Arm  | medium-fast | MR15             |
+| Eng     | Tymal        | Mills         | Pacer   | Left Arm  | medium-fast | NULL             |
+| Eng     | Chris        | Jordan        | Pacer   | Right Arm | medium-fast | CJ34             |
+| Eng     | Mark         | Wood          | Pacer   | Right Arm | Fast        | MW33             |
+| Eng     | Adil         | Rashid        | Spinner | Right Arm | Legbreak    | AR95             |
+| RSA     | Tabraiz      | Shamsi        | Spinner | Left Arm  | Chinaman    | NULL             |
+| RSA     | Keshav       | Maharaj       | Spinner | Left Arm  | Orthodox    | NULL             |
+| RSA     | Anrich       | Nortje        | Pacer   | Right Arm | Fast        | NULL             |
+| RSA     | Kagiso       | Rabada        | Pacer   | Right Arm | Fast        | NULL             |
+| RSA     | Lungi        | Ngidi         | Pacer   | Right Arm | Fast        | NULL             |
+| Sco     | Mark         | Watt          | Spinner | Left Arm  | Orthodox    | MW51             |
+| Sco     | Safyaan      | Sharif        | Pacer   | Right Arm | medium-fast | SS50             |
+| Sco     | Chris        | Greaves       | Spinner | Right Arm | Legbreak    | NULL             |
+| Sco     | Bradley      | Wheal         | Pacer   | Right Arm | medium-fast | NULL             |
+| Sco     | Hamza        | Tahir         | Spinner | Left Arm  | Orthodox    | NULL             |
+| Afg     | Rashid       | Khan          | Spinner | Right Arm | Legbreak    | RK19             |
+| Afg     | Mujeeb Ur    | Rahman        | Spinner | Right Arm | Offbreak    | MUR88            |
+| Afg     | Karim        | Janat         | Pacer   | Right Arm | Medium      | NULL             |
+| Afg     | Hamid        | Hassan        | Pacer   | Right Arm | Fast        | HH66             |
+| Afg     | Fareed Ahmad | Malik         | Pacer   | Left Arm  | medium-fast | NULL             |
+| WI      | Oshane       | Thomas        | Pacer   | Right Arm | Fast        | NULL             |
+| WI      | Akeal        | Hosein        | Spinner | Left Arm  | Orthodox    | NULL             |
+| WI      | Hayden       | Walsh         | Spinner | Right Arm | Legbreak    | NULL             |
+| SL      | Dushmantha   | Chameera      | Pacer   | Right Arm | Fast        | DC05             |
+| SL      | Chamika      | Karunaratne   | Pacer   | Right Arm | medium-fast | NULL             |
+| SL      | Lahiru       | Kumara        | Pacer   | Right Arm | medium-fast | NULL             |
+| SL      | Maheesh      | Theekshana    | Spinner | Right Arm | Offbreak    | NULL             |
++---------+--------------+---------------+---------+-----------+-------------+------------------+
+48 rows in set (0.00 sec)
+
+mysql> Select * From All_Rounders;
++---------+---------------+------------+--------------------+--------------+--------------------+-----------------------+
+| team_id | first_name    | last_name  | role               | batting_type | bowling_type       | all_rounder_player_id |
++---------+---------------+------------+--------------------+--------------+--------------------+-----------------------+
+| NZ      | Mitchell      | Santner    | Bowling Allrounder | Left Handed  | Left Arm Orthodox  | NULL                  |
+| NZ      | Daryl         | Mitchell   | Bowling Allrounder | Right Handed | Right Arm Medium   | NULL                  |
+| NZ      | James         | Neesham    | Batting Allrounder | Left Handed  | Right Arm Medium   | NULL                  |
+| Aus     | Mitchell      | Marsh      | Batting Allrounder | Right Handed | Right Arm Medium   | MM08                  |
+| Aus     | Marcus        | Stoinis    | Batting Allrounder | Right Handed | Right Arm Medium   | MS17                  |
+| Aus     | Glenn         | Maxwell    | Batting Allrounder | Right Handed | Right Arm Offbreak | GM32                  |
+| Aus     | Ashton        | Agar       | Bowling Allrounder | Left Handed  | Left Arm Orthodox  | NULL                  |
+| Pak     | Mohammad      | Hafeez     | Batting Allrounder | Right Handed | Right Arm Offbreak | NULL                  |
+| Pak     | Shoaib        | Malik      | Batting Allrounder | Right Handed | Right Arm Offbreak | SM18                  |
+| Pak     | Shadab        | Khan       | Bowling Allrounder | Right Handed | Right Arm Legbreak | NULL                  |
+| Pak     | Imad          | Wasim      | Bowling Allrounder | Left Handed  | Left Arm Orthodox  | NULL                  |
+| IND     | Hardik        | Pandya     | Batting Allrounder | Right Handed | Right Arm Medium   | HP33                  |
+| IND     | Ravindra      | Jadeja     | Bowling Allrounder | Left Handed  | Left Arm Orthodox  | RJ08                  |
+| IND     | Ravichandran  | Ashwin     | Bowling Allrounder | Right Handed | Right Arm Offbreak | NULL                  |
+| Ban     | Mahmudullah   |            | Batting Allrounder | Right Handed | Right Arm Offbreak | MD30                  |
+| Ban     | Shakib Al     | Hasan      | Batting Allrounder | Left Handed  | Left Arm Orthodox  | SAH75                 |
+| Ban     | Mahedi        | Hasan      | Batting Allrounder | Right Handed | Right Arm Offbreak | NULL                  |
+| Eng     | Moeen         | Ali        | Batting Allrounder | Left Handed  | Right Arm Offbreak | MA18                  |
+| Eng     | Chris         | Woakes     | Bowling Allrounder | Right Handed | Right Arm Medium   | CW19                  |
+| Eng     | David         | Willey     | Bowing Allrounder  | Left Handed  | Left Arm Medium    | NULL                  |
+| RSA     | Dwaine        | Pretorius  | Bowing Allrounder  | Right Handed | Right Arm Medium   | NULL                  |
+| Sco     | Richie        | Berrington | Batting Allrounder | Right Handed | Right Arm Medium   | RB44                  |
+| Sco     | Alasdair      | Evans      | Bowling Allrounder | Right Handed | Right Arm Medium   | NULL                  |
+| Sco     | Michael       | Leask      | Batting Allrounder | Right Handed | Right Arm Offbreak | ML29                  |
+| Afg     | Mohammad      | Nabi       | Bowling Allrounder | Right Handed | Right Arm Offbreak | MN07                  |
+| Afg     | Gulbadin      | Naib       | Bowling Allrounder | Right Handed | Right Arm Medium   | GN11                  |
+| WI      | Kieron        | Pollard    | Batting Allrounder | Right Handed | Right Arm Medium   | KP55                  |
+| WI      | Dwayne        | Bravo      | Batting Allrounder | Right Handed | Right Arm Medium   | DB47                  |
+| WI      | Andre         | Russell    | Bowling Allrounder | Right Handed | Right Arm Medium   | AR12                  |
+| WI      | Jason         | Holder     | Bowling Allrounder | Right Handed | Right Arm Medium   | JH98                  |
+| WI      | Roston        | Chase      | Bowling Allrounder | Right Handed | Right Arm Offbreak | NULL                  |
+| SL      | Dasun         | Shanaka    | Batting Allrounder | Right Handed | Right Arm Medium   | DS07                  |
+| SL      | Dhananjaya de | Silva      | Batting Allrounder | Right Handed | Right Arm Offbreak | NULL                  |
+| SL      | Charith       | Asalanka   | Bowling Allrounder | Left Handed  | Right Arm Offbreak | NULL                  |
+| SL      | Wanindu       | Hasaranga  | Bowling Allrounder | Right Handed | Right Arm Legbreak | WH49                  |
++---------+---------------+------------+--------------------+--------------+--------------------+-----------------------+
+35 rows in set (0.00 sec)
+
+mysql> Create VIEW Matches_at_Sharjah
+    -> AS select match_id,match_date,venue
+    -> From Matches
+    -> Where venue = 'Sharjah';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Select * from Matches_at_Sharjah;
++----------+------------+---------+
+| match_id | match_date | venue   |
++----------+------------+---------+
+|        3 | 2021-10-24 | Sharjah |
+|        5 | 2021-10-25 | Sharjah |
+|        7 | 2021-10-26 | Sharjah |
+|        9 | 2021-10-27 | Sharjah |
+|       11 | 2021-10-29 | Sharjah |
+|       13 | 2021-10-30 | Sharjah |
+|       17 | 2021-11-01 | Sharjah |
+|       24 | 2021-11-05 | Sharjah |
+|       27 | 2021-11-06 | Sharjah |
+|       29 | 2021-11-07 | Sharjah |
++----------+------------+---------+
+10 rows in set (0.00 sec)
+mysql> Create VIEW Left_Arm_Pacers
+    -> AS select team_id,bowler_player_id,role,type
+    -> From Bowlers
+    -> Where role = 'Pacer' AND type = 'Left Arm';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Select * from Left_Arm_Pacers;
++---------+------------------+-------+----------+
+| team_id | bowler_player_id | role  | type     |
++---------+------------------+-------+----------+
+| NZ      | TB18             | Pacer | Left Arm |
+| Aus     | MS56             | Pacer | Left Arm |
+| Pak     | NULL             | Pacer | Left Arm |
+| Ban     | MR15             | Pacer | Left Arm |
+| Eng     | NULL             | Pacer | Left Arm |
+| Afg     | NULL             | Pacer | Left Arm |
++---------+------------------+-------+----------+
+6 rows in set (0.00 sec)
+
+mysql> Create VIEW Strikers
+    -> AS select team_id,player_id,strike_rate
+    -> From Players
+    -> Where strike_rate > 135;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> Select * from Strikers;
++---------+-----------+-------------+
+| team_id | player_id | strike_rate |
++---------+-----------+-------------+
+| Aus     | AF05      |      148.40 |
+| RSA     | AM04      |      147.00 |
+| WI      | AR12      |      156.00 |
+| WI      | CG333     |      137.51 |
+| Eng     | CW19      |      148.48 |
+| NZ      | DC88      |      139.32 |
+| RSA     | DM10      |      140.63 |
+| Eng     | DM29      |      137.21 |
+| RSA     | DP29      |      161.90 |
+| Aus     | DW31      |      140.11 |
+| WI      | EL17      |      155.52 |
+| Eng     | EM16      |      137.64 |
+| Aus     | GM32      |      156.49 |
+| Sco     | GM93      |      146.31 |
+| RSA     | HK45      |      142.09 |
+| IND     | HP33      |      146.30 |
+| Eng     | JB51      |      135.84 |
+| Eng     | JB63      |      141.16 |
+| Eng     | JR20      |      144.93 |
+| IND     | KLR01     |      143.29 |
+| WI      | KP55      |      135.55 |
+| Eng     | LL23      |      165.79 |
+| Eng     | MA18      |      135.29 |
+| NZ      | MG31      |      136.50 |
+| Afg     | MN07      |      142.95 |
+| Aus     | MS17      |      135.06 |
+| Afg     | NZ01      |      141.28 |
+| RSA     | QdK12     |      135.03 |
+| IND     | RS45      |      139.61 |
+| NZ      | TS38      |      143.10 |
+| IND     | VK18      |      137.91 |
++---------+-----------+-------------+
+31 rows in set (0.00 sec)
+
+mysql> Create VIEW Left_Handed_Batsman
+    -> AS select team_id,first_name,last_name
+    -> From Batsman
+    -> Where type = 'Left Handed';
+Query OK, 0 rows affected (0.01 sec)
+mysql> Create VIEW Variation_Spinners
+    -> AS select team_id,first_name,style
+    -> From Bowlers
+    -> Where style='Chinaman' OR 'Offbreak' OR 'Orthodox';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Select * from Variation_Spinners;
++---------+------------+----------+
+| team_id | first_name | style    |
++---------+------------+----------+
+| RSA     | Tabraiz    | Chinaman |
++---------+------------+----------+
+1 row in set, 2 warnings (0.01 sec)
+
+mysql> Select * from Left_Handed_Batsman;
++---------+-------------+-----------+
+| team_id | first_name  | last_name |
++---------+-------------+-----------+
+| Aus     | David       | Warner    |
+| Pak     | Fakhar      | Zaman     |
+| Ban     | Soumya      | Sarkar    |
+| Eng     | Dawid       | Malan     |
+| Eng     | Eoin        | Morgan    |
+| RSA     | David       | Miller    |
+| Sco     | George      | Munsey    |
+| Afg     | Najibullah  | Zardran   |
+| Afg     | Hazratullah | Zazai     |
+| WI      | Chris       | Gayle     |
+| WI      | Evin        | Lewis     |
+| WI      | Shimron     | Hetmyer   |
+| SL      | Bhanuka     | Rajapaksa |
+| SL      | Avishka     | Fernando  |
++---------+-------------+-----------+
+14 rows in set (0.00 sec)
+
+mysql> Create unique INDEX Players_Index on Players(team_id,player_id,total_runs);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show index from Players;
++---------+------------+---------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table   | Non_unique | Key_name      | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++---------+------------+---------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| players |          0 | PRIMARY       |            1 | player_id   | A         |          86 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| players |          0 | Players_Index |            1 | team_id     | A         |          11 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
+| players |          0 | Players_Index |            2 | player_id   | A         |          86 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| players |          0 | Players_Index |            3 | total_runs  | A         |          86 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++---------+------------+---------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+4 rows in set (0.02 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+

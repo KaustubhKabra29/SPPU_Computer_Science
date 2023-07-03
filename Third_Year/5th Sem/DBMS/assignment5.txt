@@ -1,0 +1,98 @@
+5. Named PL/SQL Block: PL/SQL Stored Procedure and Stored Function.
+	Write a Stored Procedure namely proc_Grade for the categorization of student. If marks scored
+	by students in examination is <=1500 and marks>=990 then student will be placed in distinction
+	category if marks scored are between 989 and 900 category is first class, if marks 899 and 825
+	category is Higher Second Class
+
+Write a PL/SQL block to use procedure created with above requirement.
+
+Stud_Marks(name, total_marks) Result(Roll,Name, Class)
+
+
+select * from stud_marks;
++------+---------+-------------+
+| Roll | Name    | total_marks |
++------+---------+-------------+
+|    1 | Akash   |        1400 |
+|    2 | Animesh |        1452 |
+|    3 | Harsh   |        1450 |
+|    4 | Karan   |         985 |
+|    5 | Varun   |         830 |
++------+---------+-------------+
+
+
+select * from result;
++------+---------+-------+
+| Roll | Name    | Class |
++------+---------+-------+
+|    1 | Akash   | NULL  |
+|    2 | Animesh | NULL  |
+|    3 | Harsh   | NULL  |
+|    4 | Karan   | NULL  |
+|    5 | Varun   | NULL  |
++------+---------+-------+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `new_procedure`(IN rno int,out grade varchar(25))
+BEGIN
+declare m int;
+select total_marks into m from stud_marks where Name = (select Name from result where Roll=rno);
+if m>=990 and m<=1500 then
+select 'Distinction' into grade;
+update result set Class='Distinction' where Roll=rno;
+elseif m>=900 and m<=989 then
+select 'First Class' into grade;
+update result set Class='First Class' where Roll=rno;
+elseif m>=825 and m<=899 then
+select 'Higher Second Class' into grade;
+update result set class='Higher Second Class' where Roll=rno;
+else
+select '--' into grade;
+update result set Class='--' where roll=rno;
+end if;
+END
+
+call new_procedure(1,grade);
+call new_procedure(2,@grade);
+call new_procedure(3,@grade);
+call new_procedure(4,@grade);
+call new_procedure(5,@grade);
+
+select * from result;
++------+---------+---------------------+
+| Roll | Name    | Class               |
++------+---------+---------------------+
+|    1 | Akash   | Distinction         |
+|    2 | Animesh | Distinction         |
+|    3 | Harsh   | Distinction         |
+|    4 | Karan   | First Class         |
+|    5 | Varun   | Higher Second Class |
++------+---------+---------------------+
+
+
+create function func_grade(rno int)
+    -> returns varchar(20)
+    -> deterministic
+    -> begin
+    -> declare grade varchar(20);
+    -> call new_procedure(rno,grade);
+    -> return grade;
+    -> end;
+    -> //
+
+select func_grade(1);//
++---------------+
+| func_grade(1) |
++---------------+
+| Distinction   |
++---------------+
+
+select func_grade(5);//
++---------------------+
+| func_grade(5)       |
++---------------------+
+| Higher Second Class |
++---------------------+
+
+
+
+

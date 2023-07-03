@@ -1,0 +1,166 @@
+mysql> show databases;
++-----------------------------+
+| Database                    |
++-----------------------------+
+| 17thsep_procedure_function  |
+| full_join                   |
+| hosiptal_record_assign3     |
+| information_schema          |
+| library                     |
+| moviedb                     |
+| mysql                       |
+| performance_schema          |
+| sakila                      |
+| sys                         |
+| t20worldcup_2021_grpa_prac2 |
+| world                       |
++-----------------------------+
+12 rows in set (0.01 sec)
+
+mysql> create database exception_handling_assig4;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use exception_handling_assig4;
+Database changed
+mysql> create table borrower(Roll_no int primary key,Name varchar(20),DateofIssue date,NameofBook varchar(20),Status int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table fine(Roll_no int,Date date,Amt int,foreign key(Roll_no) references borrower(Roll_no));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO borrower VALUES ('1', 'Kaustubh', '2021-11-01', 'Java Programming', 'I');
+ERROR 1366 (HY000): Incorrect integer value: 'I' for column 'Status' at row 1
+mysql> desc borrower;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Roll_no     | int         | NO   | PRI | NULL    |       |
+| Name        | varchar(20) | YES  |     | NULL    |       |
+| DateofIssue | date        | YES  |     | NULL    |       |
+| NameofBook  | varchar(20) | YES  |     | NULL    |       |
+| Status      | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> drop table borrower;
+ERROR 3730 (HY000): Cannot drop table 'borrower' referenced by a foreign key constraint 'fine_ibfk_1' on table 'fine'.
+mysql> drop table fine;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> drop table borrower;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table borrower(Roll_no int primary key,Name varchar(20),DateofIssue date,NameofBook varchar(20),Status varchar(5));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> reate table fine(Roll_no int,Date date,Amt int,foreign key(Roll_no) references borrower(Roll_no));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reate table fine(Roll_no int,Date date,Amt int,foreign key(Roll_no) references b' at line 1
+mysql> create table fine(Roll_no int,Date date,Amt int,foreign key(Roll_no) references borrower(Roll_no));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO borrower VALUES ('1', 'Kaustubh', '2021-11-01', 'Java Programming', 'I');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO borrower VALUES ('2', 'Harsh', '2021-12-10', 'DBMS', 'I');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO borrower VALUES ('3', 'Onasvee', '2021-12-08', 'CNS', 'I');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO borrower VALUES ('4', 'Akash', '2021-12-15', 'SPOS', 'I');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO borrower VALUES ('4', 'Ankit', '2021-12-16', 'DS', 'I');
+ERROR 1062 (23000): Duplicate entry '4' for key 'borrower.PRIMARY'
+mysql> INSERT INTO borrower VALUES ('5', 'Ankit', '2021-12-16', 'DS', 'I');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO borrower VALUES ('6', 'Vaishnavi', '2021-12-18', 'TOC', 'I');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from borrower;
++---------+-----------+-------------+------------------+--------+
+| Roll_no | Name      | DateofIssue | NameofBook       | Status |
++---------+-----------+-------------+------------------+--------+
+|       1 | Kaustubh  | 2021-11-01  | Java Programming | I      |
+|       2 | Harsh     | 2021-12-10  | DBMS             | I      |
+|       3 | Onasvee   | 2021-12-08  | CNS              | I      |
+|       4 | Akash     | 2021-12-15  | SPOS             | I      |
+|       5 | Ankit     | 2021-12-16  | DS               | I      |
+|       6 | Vaishnavi | 2021-12-18  | TOC              | I      |
++---------+-----------+-------------+------------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> create procedure fine_calculation(IN rno int(3),bkname char(20))
+    -> begin
+    -> declare i_date date;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> create procedure fine_calculation(IN rno int(3),bkname char(20))
+    -> begin
+    -> declare i_date date;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> create procedure fine_calculation(IN rno int(3),bkname char(20))
+    -> begin
+    -> declare x integer;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> delimiter //
+mysql> create procedure fine_calculation(IN rno int(3),bkname char(20))
+    -> begin
+    -> declare i_date date;
+    -> declare diff int;
+    -> declare fine_amt int;
+    -> declare exit handler for sqlexception select 'Table not Found';
+    -> select DateofIssue into i_date from borrower where Roll_no = rno and NameofBook=bkname;
+    -> select datediff(curdate(),i_date) into diff;
+    -> if(diff>15 and diff<=30) then
+    -> set fine_amt = diff*5;
+    -> insert into fine values(rno,curdate(),fine_amt);
+    -> elseif(diff>30) then
+    -> set fine_amt = 15*5 + (diff-30)*50;
+    -> insert into fine values(rno,curdate(),fine_amt);
+    -> end if;
+    -> update borrower set Status = 'R' where Roll_no = rno and NameofBook =bkname;
+    -> end;
+    -> //
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> select * from borrower;
+    -> //
++---------+-----------+-------------+------------------+--------+
+| Roll_no | Name      | DateofIssue | NameofBook       | Status |
++---------+-----------+-------------+------------------+--------+
+|       1 | Kaustubh  | 2021-11-01  | Java Programming | I      |
+|       2 | Harsh     | 2021-12-10  | DBMS             | I      |
+|       3 | Onasvee   | 2021-12-08  | CNS              | I      |
+|       4 | Akash     | 2021-12-15  | SPOS             | I      |
+|       5 | Ankit     | 2021-12-16  | DS               | I      |
+|       6 | Vaishnavi | 2021-12-18  | TOC              | I      |
++---------+-----------+-------------+------------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> call fine_calculation(1,'Java Programming');
+    -> //
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from fine;
+    -> //
++---------+------------+------+
+| Roll_no | Date       | Amt  |
++---------+------------+------+
+|       1 | 2021-12-15 |  775 |
++---------+------------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from borrower;
+    -> //
++---------+-----------+-------------+------------------+--------+
+| Roll_no | Name      | DateofIssue | NameofBook       | Status |
++---------+-----------+-------------+------------------+--------+
+|       1 | Kaustubh  | 2021-11-01  | Java Programming | R      |
+|       2 | Harsh     | 2021-12-10  | DBMS             | I      |
+|       3 | Onasvee   | 2021-12-08  | CNS              | I      |
+|       4 | Akash     | 2021-12-15  | SPOS             | I      |
+|       5 | Ankit     | 2021-12-16  | DS               | I      |
+|       6 | Vaishnavi | 2021-12-18  | TOC              | I      |
++---------+-----------+-------------+------------------+--------+
+6 rows in set (0.00 sec)

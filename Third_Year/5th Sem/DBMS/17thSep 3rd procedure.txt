@@ -1,0 +1,69 @@
+to handle exception if record not present
+
+show databases;
++----------------------------+
+| Database                   |
++----------------------------+
+| 17thsep_procedure_function |
+| information_schema         |
+| library                    |
+| mysql                      |
+| performance_schema         |
+| sakila                     |
+| sys                        |
+| world                      |
++----------------------------+
+8 rows in set (0.03 sec)
+
+mysql> use 17thsep_procedure_function;
+Database changed
+mysql> select * from student;
++---------+--------------+-------------+
+| roll_no | student_name | total_marks |
++---------+--------------+-------------+
+|       1 | Kaustubh     |         475 |
+|       2 | Harsh        |         480 |
+|       3 | Onasvee      |         485 |
+|       4 | Akash        |         480 |
+|       5 | Ankit        |         470 |
+|       6 | Vaishnavi    |         460 |
+|       7 | Unnati       |         465 |
+|       8 | Himanshu     |         450 |
+|       9 | Ankur        |         445 |
+|      10 | Abhishek     |         430 |
++---------+--------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> create procedure exception(IN student_id int(10))
+    -> begin
+    -> DECLARE EXIT HANDLER FOR NOT FOUND
+    -> select "Record not Found";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 4
+mysql> delimiter //
+mysql> create procedure exception(IN student_id int(10))
+    -> begin
+    -> DECLARE EXIT HANDLER FOR NOT FOUND
+    -> select "Record not Found";
+    -> select * from student where roll_no=student_id;
+    -> end
+    -> //
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> call exception(1);
+    -> //
++---------+--------------+-------------+
+| roll_no | student_name | total_marks |
++---------+--------------+-------------+
+|       1 | Kaustubh     |         475 |
++---------+--------------+-------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> call exception(11);
+    -> //
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>

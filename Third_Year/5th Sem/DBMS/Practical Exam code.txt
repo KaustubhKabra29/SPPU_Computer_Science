@@ -1,0 +1,826 @@
+MongoDB shell version v5.0.4
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("122ea6d4-ddfa-4df2-a3ba-72ff9a0758ca") }
+MongoDB server version: 5.0.4
+================
+Warning: the "mongo" shell has been superseded by "mongosh",
+which delivers improved usability and compatibility.The "mongo" shell has been deprecated and will be removed in
+an upcoming release.
+For installation instructions, see
+https://docs.mongodb.com/mongodb-shell/install/
+================
+---
+The server generated these startup warnings when booting:
+        2021-12-16T03:17:19.935+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+---
+---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+        metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+        The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+        and anyone you share the URL with. MongoDB may use this information to make product
+        improvements and to suggest MongoDB products and deployment options to you.
+
+        To enable free monitoring, run the following command: db.enableFreeMonitoring()
+        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use dbms_practical_exam
+switched to db dbms_practical_exam
+> db.createCollection("Student");
+{ "ok" : 1 }
+> db.Student.insert({"Stud_id":1,"first_name":"Kaustubh","Last_name":"Kabra,"Deparment":"Comp","Total_marks":91});
+uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:75
+> db.Student.insert({"Stud_id":1,"first_name":"Kaustubh","Last_name":"Kabra,"Deparment":"Comp","Total_marks":91})
+uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:75
+> db.Student.insert({"Stud_id":1,"first_name":"Kaustubh","Last_name":"Kabra","Deparment":"Comp","Total_marks":91})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":2,"first_name":"Onasvee","Last_name":"Banarse","Deparment":"Comp","Total_marks":94})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":3,"first_name":"Harsh","Last_name":"Shah","Deparment":"Comp","Total_marks":92})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":4,"first_name":"Akash","Last_name":"Mete","Deparment":"Comp","Total_marks":91})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":5,"first_name":"Vaishnavi","Last_name":"Malshikare","Deparment":"Comp","Total_marks":90})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":6,"first_name":"Ankit","Last_name":"Patil","Deparment":"Comp","Total_marks":89})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":7,"first_name":"ItsKK29","Last_name":"","Deparment":"Comp","Total_marks":85})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":8,"first_name":"Lone","Last_name":"Wolf","Deparment":"Comp","Total_marks":88})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":9,"first_name":"Orion","Last_name":"","Deparment":"Comp","Total_marks":88})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":10,"first_name":"Prisoner","Last_name":"","Deparment":"Comp","Total_marks":87})
+WriteResult({ "nInserted" : 1 })
+> db.Student.find().pretty();
+{
+        "_id" : ObjectId("61bad531e00be1793d75dcbe"),
+        "Stud_id" : 1,
+        "first_name" : "Kaustubh",
+        "Last_name" : "Kabra",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad54ae00be1793d75dcbf"),
+        "Stud_id" : 2,
+        "first_name" : "Onasvee",
+        "Last_name" : "Banarse",
+        "Deparment" : "Comp",
+        "Total_marks" : 94
+}
+{
+        "_id" : ObjectId("61bad585e00be1793d75dcc0"),
+        "Stud_id" : 3,
+        "first_name" : "Harsh",
+        "Last_name" : "Shah",
+        "Deparment" : "Comp",
+        "Total_marks" : 92
+}
+{
+        "_id" : ObjectId("61bad5a8e00be1793d75dcc1"),
+        "Stud_id" : 4,
+        "first_name" : "Akash",
+        "Last_name" : "Mete",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad5ece00be1793d75dcc2"),
+        "Stud_id" : 5,
+        "first_name" : "Vaishnavi",
+        "Last_name" : "Malshikare",
+        "Deparment" : "Comp",
+        "Total_marks" : 90
+}
+{
+        "_id" : ObjectId("61bad606e00be1793d75dcc3"),
+        "Stud_id" : 6,
+        "first_name" : "Ankit",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 89
+}
+{
+        "_id" : ObjectId("61bad626e00be1793d75dcc4"),
+        "Stud_id" : 7,
+        "first_name" : "ItsKK29",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 85
+}
+{
+        "_id" : ObjectId("61bad63ee00be1793d75dcc5"),
+        "Stud_id" : 8,
+        "first_name" : "Lone",
+        "Last_name" : "Wolf",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad653e00be1793d75dcc6"),
+        "Stud_id" : 9,
+        "first_name" : "Orion",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad66be00be1793d75dcc7"),
+        "Stud_id" : 10,
+        "first_name" : "Prisoner",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 87
+}
+> db.Student.update({"Stud_id":9},{$set:{"Last_name":"Orignal"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find().pretty();
+{
+        "_id" : ObjectId("61bad531e00be1793d75dcbe"),
+        "Stud_id" : 1,
+        "first_name" : "Kaustubh",
+        "Last_name" : "Kabra",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad54ae00be1793d75dcbf"),
+        "Stud_id" : 2,
+        "first_name" : "Onasvee",
+        "Last_name" : "Banarse",
+        "Deparment" : "Comp",
+        "Total_marks" : 94
+}
+{
+        "_id" : ObjectId("61bad585e00be1793d75dcc0"),
+        "Stud_id" : 3,
+        "first_name" : "Harsh",
+        "Last_name" : "Shah",
+        "Deparment" : "Comp",
+        "Total_marks" : 92
+}
+{
+        "_id" : ObjectId("61bad5a8e00be1793d75dcc1"),
+        "Stud_id" : 4,
+        "first_name" : "Akash",
+        "Last_name" : "Mete",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad5ece00be1793d75dcc2"),
+        "Stud_id" : 5,
+        "first_name" : "Vaishnavi",
+        "Last_name" : "Malshikare",
+        "Deparment" : "Comp",
+        "Total_marks" : 90
+}
+{
+        "_id" : ObjectId("61bad606e00be1793d75dcc3"),
+        "Stud_id" : 6,
+        "first_name" : "Ankit",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 89
+}
+{
+        "_id" : ObjectId("61bad626e00be1793d75dcc4"),
+        "Stud_id" : 7,
+        "first_name" : "ItsKK29",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 85
+}
+{
+        "_id" : ObjectId("61bad63ee00be1793d75dcc5"),
+        "Stud_id" : 8,
+        "first_name" : "Lone",
+        "Last_name" : "Wolf",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad653e00be1793d75dcc6"),
+        "Stud_id" : 9,
+        "first_name" : "Orion",
+        "Last_name" : "Orignal",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad66be00be1793d75dcc7"),
+        "Stud_id" : 10,
+        "first_name" : "Prisoner",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 87
+}
+> db.Student.remove({"Stud_id":10});
+WriteResult({ "nRemoved" : 1 })
+> db.Student.find().pretty();
+{
+        "_id" : ObjectId("61bad531e00be1793d75dcbe"),
+        "Stud_id" : 1,
+        "first_name" : "Kaustubh",
+        "Last_name" : "Kabra",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad54ae00be1793d75dcbf"),
+        "Stud_id" : 2,
+        "first_name" : "Onasvee",
+        "Last_name" : "Banarse",
+        "Deparment" : "Comp",
+        "Total_marks" : 94
+}
+{
+        "_id" : ObjectId("61bad585e00be1793d75dcc0"),
+        "Stud_id" : 3,
+        "first_name" : "Harsh",
+        "Last_name" : "Shah",
+        "Deparment" : "Comp",
+        "Total_marks" : 92
+}
+{
+        "_id" : ObjectId("61bad5a8e00be1793d75dcc1"),
+        "Stud_id" : 4,
+        "first_name" : "Akash",
+        "Last_name" : "Mete",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad5ece00be1793d75dcc2"),
+        "Stud_id" : 5,
+        "first_name" : "Vaishnavi",
+        "Last_name" : "Malshikare",
+        "Deparment" : "Comp",
+        "Total_marks" : 90
+}
+{
+        "_id" : ObjectId("61bad606e00be1793d75dcc3"),
+        "Stud_id" : 6,
+        "first_name" : "Ankit",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 89
+}
+{
+        "_id" : ObjectId("61bad626e00be1793d75dcc4"),
+        "Stud_id" : 7,
+        "first_name" : "ItsKK29",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 85
+}
+{
+        "_id" : ObjectId("61bad63ee00be1793d75dcc5"),
+        "Stud_id" : 8,
+        "first_name" : "Lone",
+        "Last_name" : "Wolf",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad653e00be1793d75dcc6"),
+        "Stud_id" : 9,
+        "first_name" : "Orion",
+        "Last_name" : "Orignal",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+> db.Student.remove({"Stud_id":8});
+WriteResult({ "nRemoved" : 1 })
+> db.Student.find().pretty();
+{
+        "_id" : ObjectId("61bad531e00be1793d75dcbe"),
+        "Stud_id" : 1,
+        "first_name" : "Kaustubh",
+        "Last_name" : "Kabra",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad54ae00be1793d75dcbf"),
+        "Stud_id" : 2,
+        "first_name" : "Onasvee",
+        "Last_name" : "Banarse",
+        "Deparment" : "Comp",
+        "Total_marks" : 94
+}
+{
+        "_id" : ObjectId("61bad585e00be1793d75dcc0"),
+        "Stud_id" : 3,
+        "first_name" : "Harsh",
+        "Last_name" : "Shah",
+        "Deparment" : "Comp",
+        "Total_marks" : 92
+}
+{
+        "_id" : ObjectId("61bad5a8e00be1793d75dcc1"),
+        "Stud_id" : 4,
+        "first_name" : "Akash",
+        "Last_name" : "Mete",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad5ece00be1793d75dcc2"),
+        "Stud_id" : 5,
+        "first_name" : "Vaishnavi",
+        "Last_name" : "Malshikare",
+        "Deparment" : "Comp",
+        "Total_marks" : 90
+}
+{
+        "_id" : ObjectId("61bad606e00be1793d75dcc3"),
+        "Stud_id" : 6,
+        "first_name" : "Ankit",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 89
+}
+{
+        "_id" : ObjectId("61bad626e00be1793d75dcc4"),
+        "Stud_id" : 7,
+        "first_name" : "ItsKK29",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 85
+}
+{
+        "_id" : ObjectId("61bad653e00be1793d75dcc6"),
+        "Stud_id" : 9,
+        "first_name" : "Orion",
+        "Last_name" : "Orignal",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+> db.Student.find({"Stud_id":3});
+{ "_id" : ObjectId("61bad585e00be1793d75dcc0"), "Stud_id" : 3, "first_name" : "Harsh", "Last_name" : "Shah", "Deparment" : "Comp", "Total_marks" : 92 }
+> db.Student.find({"Stud_id":7});
+{ "_id" : ObjectId("61bad626e00be1793d75dcc4"), "Stud_id" : 7, "first_name" : "ItsKK29", "Last_name" : "", "Deparment" : "Comp", "Total_marks" : 85 }
+> db.Student.find({"Stud_id":8});
+> db.Student.insert({"Stud_id":8,"first_name":"Lone","Last_name":"Wolf","Deparment":"Comp","Total_marks":88})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":15,"first_name":"Jatin","Last_name":"Patil","Deparment":"Comp","Total_marks":80})
+WriteResult({ "nInserted" : 1 })
+> db.Student.find().pretty();
+{
+        "_id" : ObjectId("61bad531e00be1793d75dcbe"),
+        "Stud_id" : 1,
+        "first_name" : "Kaustubh",
+        "Last_name" : "Kabra",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad54ae00be1793d75dcbf"),
+        "Stud_id" : 2,
+        "first_name" : "Onasvee",
+        "Last_name" : "Banarse",
+        "Deparment" : "Comp",
+        "Total_marks" : 94
+}
+{
+        "_id" : ObjectId("61bad585e00be1793d75dcc0"),
+        "Stud_id" : 3,
+        "first_name" : "Harsh",
+        "Last_name" : "Shah",
+        "Deparment" : "Comp",
+        "Total_marks" : 92
+}
+{
+        "_id" : ObjectId("61bad5a8e00be1793d75dcc1"),
+        "Stud_id" : 4,
+        "first_name" : "Akash",
+        "Last_name" : "Mete",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad5ece00be1793d75dcc2"),
+        "Stud_id" : 5,
+        "first_name" : "Vaishnavi",
+        "Last_name" : "Malshikare",
+        "Deparment" : "Comp",
+        "Total_marks" : 90
+}
+{
+        "_id" : ObjectId("61bad606e00be1793d75dcc3"),
+        "Stud_id" : 6,
+        "first_name" : "Ankit",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 89
+}
+{
+        "_id" : ObjectId("61bad626e00be1793d75dcc4"),
+        "Stud_id" : 7,
+        "first_name" : "ItsKK29",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 85
+}
+{
+        "_id" : ObjectId("61bad653e00be1793d75dcc6"),
+        "Stud_id" : 9,
+        "first_name" : "Orion",
+        "Last_name" : "Orignal",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad7ece00be1793d75dcc8"),
+        "Stud_id" : 8,
+        "first_name" : "Lone",
+        "Last_name" : "Wolf",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad80be00be1793d75dcc9"),
+        "Stud_id" : 15,
+        "first_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 80
+}
+> db.Student.insert({"Stud_id":15,"first_name":"Jatin","Last_name":"Patil","Deparment":"Comp","Total_marks":80,"Shift":"1st"})
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({"Stud_id":17,"first_name":"Ankur","Last_name":"Gujrati","Deparment":"Comp","Total_marks":75,"Shift":"2st"})
+WriteResult({ "nInserted" : 1 })
+> db.Student.find().pretty();
+{
+        "_id" : ObjectId("61bad531e00be1793d75dcbe"),
+        "Stud_id" : 1,
+        "first_name" : "Kaustubh",
+        "Last_name" : "Kabra",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad54ae00be1793d75dcbf"),
+        "Stud_id" : 2,
+        "first_name" : "Onasvee",
+        "Last_name" : "Banarse",
+        "Deparment" : "Comp",
+        "Total_marks" : 94
+}
+{
+        "_id" : ObjectId("61bad585e00be1793d75dcc0"),
+        "Stud_id" : 3,
+        "first_name" : "Harsh",
+        "Last_name" : "Shah",
+        "Deparment" : "Comp",
+        "Total_marks" : 92
+}
+{
+        "_id" : ObjectId("61bad5a8e00be1793d75dcc1"),
+        "Stud_id" : 4,
+        "first_name" : "Akash",
+        "Last_name" : "Mete",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad5ece00be1793d75dcc2"),
+        "Stud_id" : 5,
+        "first_name" : "Vaishnavi",
+        "Last_name" : "Malshikare",
+        "Deparment" : "Comp",
+        "Total_marks" : 90
+}
+{
+        "_id" : ObjectId("61bad606e00be1793d75dcc3"),
+        "Stud_id" : 6,
+        "first_name" : "Ankit",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 89
+}
+{
+        "_id" : ObjectId("61bad626e00be1793d75dcc4"),
+        "Stud_id" : 7,
+        "first_name" : "ItsKK29",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 85
+}
+{
+        "_id" : ObjectId("61bad653e00be1793d75dcc6"),
+        "Stud_id" : 9,
+        "first_name" : "Orion",
+        "Last_name" : "Orignal",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad7ece00be1793d75dcc8"),
+        "Stud_id" : 8,
+        "first_name" : "Lone",
+        "Last_name" : "Wolf",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad80be00be1793d75dcc9"),
+        "Stud_id" : 15,
+        "first_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 80
+}
+{
+        "_id" : ObjectId("61bad867e00be1793d75dcca"),
+        "Stud_id" : 15,
+        "first_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 80,
+        "Shift" : "1st"
+}
+{
+        "_id" : ObjectId("61bad8a3e00be1793d75dccb"),
+        "Stud_id" : 17,
+        "first_name" : "Ankur",
+        "Last_name" : "Gujrati",
+        "Deparment" : "Comp",
+        "Total_marks" : 75,
+        "Shift" : "2st"
+}
+> db.Student.insert({"Stud_id":20,"first_name":"Himanshu","Last_name":"Pawer","Deparment":"Comp","Total_marks":80,"Shift":"1st"})
+WriteResult({ "nInserted" : 1 })
+> db.Student.find({$and:[{"Department":"Comp"},{"Shift":"1st"}]}).pretty();
+> db.Student.find({$and:[{"Department":"Comp"},{"Shift":"1st"}]});
+> db.Student.find({$or:[{"Department":"Comp"},{"Shift":"1st"}]}).pretty();
+{
+        "_id" : ObjectId("61bad867e00be1793d75dcca"),
+        "Stud_id" : 15,
+        "first_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 80,
+        "Shift" : "1st"
+}
+{
+        "_id" : ObjectId("61bad8f9e00be1793d75dccc"),
+        "Stud_id" : 20,
+        "first_name" : "Himanshu",
+        "Last_name" : "Pawer",
+        "Deparment" : "Comp",
+        "Total_marks" : 80,
+        "Shift" : "1st"
+}
+> db.Student.find({$and:[{"Shift":"2nd"},{"Shift":"1st"}]}).pretty();
+> db.Student.save({"_id":ObjectId("61bad867e00be1793d75dcca"),"Stud_id:15,"First_name":"Jatin","Department":"Comp","Shift":"2nd"});
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:73
+> db.Student.save({"_id":ObjectId("61bad867e00be1793d75dcca"),"Stud_id:15,"First_name":"Jatin","Last_name":"Patil","Department":"Comp","Total_marks:80,"Shift":"2nd"});
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:73
+> db.Student.save({"_id":ObjectId("61bad867e00be1793d75dcca"),"Stud_id:15,"First_name":"Jatin","Last_name":"Patil","Department":"Comp","Total_marks":80,"Shift":"2nd"});
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:73
+> db.Student.save({"_id":ObjectId("61bad867e00be1793d75dcca"),"Stud_id":15,"First_name":"Jatin","Last_name":"Patil","Department":"Comp","Total_marks":80,"Shift":"2nd"});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find().pretty();
+{
+        "_id" : ObjectId("61bad531e00be1793d75dcbe"),
+        "Stud_id" : 1,
+        "first_name" : "Kaustubh",
+        "Last_name" : "Kabra",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad54ae00be1793d75dcbf"),
+        "Stud_id" : 2,
+        "first_name" : "Onasvee",
+        "Last_name" : "Banarse",
+        "Deparment" : "Comp",
+        "Total_marks" : 94
+}
+{
+        "_id" : ObjectId("61bad585e00be1793d75dcc0"),
+        "Stud_id" : 3,
+        "first_name" : "Harsh",
+        "Last_name" : "Shah",
+        "Deparment" : "Comp",
+        "Total_marks" : 92
+}
+{
+        "_id" : ObjectId("61bad5a8e00be1793d75dcc1"),
+        "Stud_id" : 4,
+        "first_name" : "Akash",
+        "Last_name" : "Mete",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad5ece00be1793d75dcc2"),
+        "Stud_id" : 5,
+        "first_name" : "Vaishnavi",
+        "Last_name" : "Malshikare",
+        "Deparment" : "Comp",
+        "Total_marks" : 90
+}
+{
+        "_id" : ObjectId("61bad606e00be1793d75dcc3"),
+        "Stud_id" : 6,
+        "first_name" : "Ankit",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 89
+}
+{
+        "_id" : ObjectId("61bad626e00be1793d75dcc4"),
+        "Stud_id" : 7,
+        "first_name" : "ItsKK29",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 85
+}
+{
+        "_id" : ObjectId("61bad653e00be1793d75dcc6"),
+        "Stud_id" : 9,
+        "first_name" : "Orion",
+        "Last_name" : "Orignal",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad7ece00be1793d75dcc8"),
+        "Stud_id" : 8,
+        "first_name" : "Lone",
+        "Last_name" : "Wolf",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad80be00be1793d75dcc9"),
+        "Stud_id" : 15,
+        "first_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 80
+}
+{
+        "_id" : ObjectId("61bad867e00be1793d75dcca"),
+        "Stud_id" : 15,
+        "First_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Department" : "Comp",
+        "Total_marks" : 80,
+        "Shift" : "2nd"
+}
+{
+        "_id" : ObjectId("61bad8a3e00be1793d75dccb"),
+        "Stud_id" : 17,
+        "first_name" : "Ankur",
+        "Last_name" : "Gujrati",
+        "Deparment" : "Comp",
+        "Total_marks" : 75,
+        "Shift" : "2st"
+}
+{
+        "_id" : ObjectId("61bad8f9e00be1793d75dccc"),
+        "Stud_id" : 20,
+        "first_name" : "Himanshu",
+        "Last_name" : "Pawer",
+        "Deparment" : "Comp",
+        "Total_marks" : 80,
+        "Shift" : "1st"
+}
+> db.Student.save({"_id":ObjectId("61bad867e00be1793d75dccd"),"Stud_id":15,"First_name":"Jatin","Last_name":"Patil","Department":"Comp","Total_marks":80,"Shift":"2nd"});
+WriteResult({
+        "nMatched" : 0,
+        "nUpserted" : 1,
+        "nModified" : 0,
+        "_id" : ObjectId("61bad867e00be1793d75dccd")
+})
+> db.Student.find().pretty();
+{
+        "_id" : ObjectId("61bad531e00be1793d75dcbe"),
+        "Stud_id" : 1,
+        "first_name" : "Kaustubh",
+        "Last_name" : "Kabra",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad54ae00be1793d75dcbf"),
+        "Stud_id" : 2,
+        "first_name" : "Onasvee",
+        "Last_name" : "Banarse",
+        "Deparment" : "Comp",
+        "Total_marks" : 94
+}
+{
+        "_id" : ObjectId("61bad585e00be1793d75dcc0"),
+        "Stud_id" : 3,
+        "first_name" : "Harsh",
+        "Last_name" : "Shah",
+        "Deparment" : "Comp",
+        "Total_marks" : 92
+}
+{
+        "_id" : ObjectId("61bad5a8e00be1793d75dcc1"),
+        "Stud_id" : 4,
+        "first_name" : "Akash",
+        "Last_name" : "Mete",
+        "Deparment" : "Comp",
+        "Total_marks" : 91
+}
+{
+        "_id" : ObjectId("61bad5ece00be1793d75dcc2"),
+        "Stud_id" : 5,
+        "first_name" : "Vaishnavi",
+        "Last_name" : "Malshikare",
+        "Deparment" : "Comp",
+        "Total_marks" : 90
+}
+{
+        "_id" : ObjectId("61bad606e00be1793d75dcc3"),
+        "Stud_id" : 6,
+        "first_name" : "Ankit",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 89
+}
+{
+        "_id" : ObjectId("61bad626e00be1793d75dcc4"),
+        "Stud_id" : 7,
+        "first_name" : "ItsKK29",
+        "Last_name" : "",
+        "Deparment" : "Comp",
+        "Total_marks" : 85
+}
+{
+        "_id" : ObjectId("61bad653e00be1793d75dcc6"),
+        "Stud_id" : 9,
+        "first_name" : "Orion",
+        "Last_name" : "Orignal",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad7ece00be1793d75dcc8"),
+        "Stud_id" : 8,
+        "first_name" : "Lone",
+        "Last_name" : "Wolf",
+        "Deparment" : "Comp",
+        "Total_marks" : 88
+}
+{
+        "_id" : ObjectId("61bad80be00be1793d75dcc9"),
+        "Stud_id" : 15,
+        "first_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Deparment" : "Comp",
+        "Total_marks" : 80
+}
+{
+        "_id" : ObjectId("61bad867e00be1793d75dcca"),
+        "Stud_id" : 15,
+        "First_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Department" : "Comp",
+        "Total_marks" : 80,
+        "Shift" : "2nd"
+}
+{
+        "_id" : ObjectId("61bad8a3e00be1793d75dccb"),
+        "Stud_id" : 17,
+        "first_name" : "Ankur",
+        "Last_name" : "Gujrati",
+        "Deparment" : "Comp",
+        "Total_marks" : 75,
+        "Shift" : "2st"
+}
+{
+        "_id" : ObjectId("61bad8f9e00be1793d75dccc"),
+        "Stud_id" : 20,
+        "first_name" : "Himanshu",
+        "Last_name" : "Pawer",
+        "Deparment" : "Comp",
+        "Total_marks" : 80,
+        "Shift" : "1st"
+}
+{
+        "_id" : ObjectId("61bad867e00be1793d75dccd"),
+        "Stud_id" : 15,
+        "First_name" : "Jatin",
+        "Last_name" : "Patil",
+        "Department" : "Comp",
+        "Total_marks" : 80,
+        "Shift" : "2nd"
+}

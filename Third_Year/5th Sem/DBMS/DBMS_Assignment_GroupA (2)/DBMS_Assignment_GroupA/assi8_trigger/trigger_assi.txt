@@ -1,0 +1,177 @@
+mysql> use test1
+Database changed
+mysql> create table account(accoid int primary key, custid int ,balance int,date_of_opening date,branch varchar(20));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE account_audit (    accoid INT,    trans_date DATE,    balance INT,    type_of_operation VARCHAR(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc account;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| accoid          | int         | NO   | PRI | NULL    |       |
+| custid          | int         | YES  |     | NULL    |       |
+| balance         | int         | YES  |     | NULL    |       |
+| date_of_opening | date        | YES  |     | NULL    |       |
+| branch          | varchar(20) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> desc account_audit;
++-------------------+-------------+------+-----+---------+-------+
+| Field             | Type        | Null | Key | Default | Extra |
++-------------------+-------------+------+-----+---------+-------+
+| accoid            | int         | YES  |     | NULL    |       |
+| trans_date        | date        | YES  |     | NULL    |       |
+| balance           | int         | YES  |     | NULL    |       |
+| type_of_operation | varchar(20) | YES  |     | NULL    |       |
++-------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> insert into account values(1,12,12000,'2001-01-01','pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into account values(2,121,6000,'2011-09-22','mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into account values(3,21,5400,'2021-05-10','mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into account values(4,55,15400,'2020-01-10','pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into account values(5,67,9500,'2019-06-15','pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from account;
++--------+--------+---------+-----------------+--------+
+| accoid | custid | balance | date_of_opening | branch |
++--------+--------+---------+-----------------+--------+
+|      1 |     12 |   12000 | 2001-01-01      | pune   |
+|      2 |    121 |    6000 | 2011-09-22      | mumbai |
+|      3 |     21 |    5400 | 2021-05-10      | mumbai |
+|      4 |     55 |   15400 | 2020-01-10      | pune   |
+|      5 |     67 |    9500 | 2019-06-15      | pune   |
++--------+--------+---------+-----------------+--------+
+5 rows in set (0.00 sec)
+
+
+mysql> USE TEST1;
+Database changed
+mysql> create trigger delete_acc before delete on account for each row begin insert into account_audit values(old.accoid,curdate(),old.balance,"deletion");end$$
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create trigger insert_acc after INSERT on account for each row begin insert into account_audit values(new.accoid,curdate(),new.balance,"insertion");end$$
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create trigger update_acc after UPDATE on account for each row begin insert into account_audit values(new.accoid,curdate(),new.balance,"update");end$$
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from account_audit;
+    -> $$
+Empty set (0.01 sec)
+
+mysql> insert into account values(7,151,6500,'2012-09-22','mumbai');$$
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from account_audit;
+    -> $$
++--------+------------+---------+-------------------+
+| accoid | trans_date | balance | type_of_operation |
++--------+------------+---------+-------------------+
+|      7 | 2021-10-11 |    6500 | insertion         |
++--------+------------+---------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> select * form account;
+    -> $$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form account' at line 1
+mysql> select * from account;$$
++--------+--------+---------+-----------------+--------+
+| accoid | custid | balance | date_of_opening | branch |
++--------+--------+---------+-----------------+--------+
+|      1 |     12 |   12000 | 2001-01-01      | pune   |
+|      2 |    121 |    6000 | 2011-09-22      | mumbai |
+|      3 |     21 |    5400 | 2021-05-10      | mumbai |
+|      4 |     55 |   15400 | 2020-01-10      | pune   |
+|      5 |     67 |    9500 | 2019-06-15      | pune   |
+|      7 |    151 |    6500 | 2012-09-22      | mumbai |
++--------+--------+---------+-----------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> delete from account where accoid=4;$$
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from account_audit;$$
++--------+------------+---------+-------------------+
+| accoid | trans_date | balance | type_of_operation |
++--------+------------+---------+-------------------+
+|      7 | 2021-10-11 |    6500 | insertion         |
+|      4 | 2021-10-11 |   15400 | deletion          |
++--------+------------+---------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> update account set balance=4000 where accoid=1;
+    -> $$
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from account_audit;$$
++--------+------------+---------+-------------------+
+| accoid | trans_date | balance | type_of_operation |
++--------+------------+---------+-------------------+
+|      7 | 2021-10-11 |    6500 | insertion         |
+|      4 | 2021-10-11 |   15400 | deletion          |
+|      1 | 2021-10-11 |    4000 | update            |
++--------+------------+---------+-------------------+
+3 rows in set (0.00 sec)
+
+mysql> create table asset (total_balance int);
+    -> $$
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> drop table asset
+    -> ;$$
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table asset (total_balance varchar(20));$$
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select sum(balance) from account;$$
++--------------+
+| sum(balance) |
++--------------+
+|        31400 |
++--------------+
+1 row in set (0.00 sec)
+
+
+mysql> set @acc_sum=0;$$
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> SELECT @acc_sum := SUM(balance) FROM account;$$
++--------------------------+
+| @acc_sum := SUM(balance) |
++--------------------------+
+|                    31400 |
++--------------------------+
+1 row in set, 1 warning (0.01 sec)
+
+mysql> SELECT @acc_sum;$$
++----------+
+| @acc_sum |
++----------+
+|    31400 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> create trigger total_amt after UPDATE or INSERT or DELETE on account for each row begin
+    -> set @acc_sum=0;
+    -> SELECT @acc_sum := SUM(balance) FROM account;
+    -> insert into asset(total_balance) value (select @acc_sum);end $$
+
+
+mysql> create trigger total_amt after UPDATE on account for each row begin set @acc_sum=0;SELECT @acc_sum := SUM(balance) FROM account;insert into asset(total_balance) value ( @acc_sum);end $$

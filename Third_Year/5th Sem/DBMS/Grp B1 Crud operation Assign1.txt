@@ -1,0 +1,215 @@
+1. MongoDB Queries:
+Design and Develop MongoDB Queries using CRUD operations. (Use CRUD operations,
+SAVE method, logical operators etc)
+
+
+use grpB
+switched to db grpB
+
+> db.createCollection("Library");
+{ "ok" : 1 }
+> db.Library.insert({"bid":1,"name":"C++","stock":10});
+WriteResult({ "nInserted" : 1 })
+> db.Library.insert({"bid":2,"name":"Java","stock":20});
+WriteResult({ "nInserted" : 1 })
+> db.Library.insert({"bid":3,"name":"Python","stock":12});
+WriteResult({ "nInserted" : 1 })
+
+
+
+> db.Library.find().pretty();
+{
+        "_id" : ObjectId("6195910447a73efd24f3f44d"),
+        "bid" : 1,
+        "name" : "C++",
+        "stock" : 10
+}
+{
+        "_id" : ObjectId("6195911447a73efd24f3f44e"),
+        "bid" : 2,
+        "name" : "Java",
+        "stock" : 20
+}
+{
+        "_id" : ObjectId("6195912347a73efd24f3f44f"),
+        "bid" : 3,
+        "name" : "Python",
+        "stock" : 12
+}
+
+-------------------------------------------------------------------------
+
+> db.Library.update({"name":"Python"},{$set:{"name":"Python 3.7"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Library.find().pretty();
+{
+        "_id" : ObjectId("6195910447a73efd24f3f44d"),
+        "bid" : 1,
+        "name" : "C++",
+        "stock" : 10
+}
+{
+        "_id" : ObjectId("6195911447a73efd24f3f44e"),
+        "bid" : 2,
+        "name" : "Java",
+        "stock" : 20
+}
+{
+        "_id" : ObjectId("6195912347a73efd24f3f44f"),
+        "bid" : 3,
+        "name" : "Python 3.7",
+        "stock" : 12
+}
+
+
+
+-------------------------------------------------------------------------
+> db.Library.remove({"bid":2});
+WriteResult({ "nRemoved" : 1 })
+> db.Library.find().pretty();
+{
+        "_id" : ObjectId("6195910447a73efd24f3f44d"),
+        "bid" : 1,
+        "name" : "C++",
+        "stock" : 10
+}
+{
+        "_id" : ObjectId("6195912347a73efd24f3f44f"),
+        "bid" : 3,
+        "name" : "Python 3.7",
+        "stock" : 12
+}
+
+
+
+-------------------------------------------------------------------------
+
+
+> db.Library.find({"name":"C++"});
+{ "_id" : ObjectId("6195910447a73efd24f3f44d"), "bid" : 1, "name" : "C++", "stock" : 10 }
+
+
+-------------------------------------------------------------------------
+> db.Library.insert({"bid":4,"name":"HTML","stock":21});
+WriteResult({ "nInserted" : 1 })
+> db.Library.remove({"bid":4});
+WriteResult({ "nRemoved" : 1 })
+> db.Library.find().pretty();
+{
+        "_id" : ObjectId("6195910447a73efd24f3f44d"),
+        "bid" : 1,
+        "name" : "C++",
+        "stock" : 10
+}
+{
+        "_id" : ObjectId("6195912347a73efd24f3f44f"),
+        "bid" : 3,
+        "name" : "Python 3.7",
+        "stock" : 12
+}
+
+-------------------------------------------------------------------------
+
+> db.Library.insert({"bid":4,"name":"HTML","stock":21, desc:"copied book"});
+WriteResult({ "nInserted" : 1 })
+> db.Library.insert({"bid":4,"name":"HTML","stock":21,desc:"original book"});
+WriteResult({ "nInserted" : 1 })
+
+> db.Library.find().pretty();
+{
+        "_id" : ObjectId("6195910447a73efd24f3f44d"),
+        "bid" : 1,
+        "name" : "C++",
+        "stock" : 10
+}
+{
+        "_id" : ObjectId("6195912347a73efd24f3f44f"),
+        "bid" : 3,
+        "name" : "Python 3.7",
+        "stock" : 12
+}
+{
+        "_id" : ObjectId("619592b447a73efd24f3f451"),
+        "bid" : 4,
+        "name" : "HTML",
+        "stock" : 21,
+        "desc" : "copied book"
+}
+{
+        "_id" : ObjectId("619592de47a73efd24f3f452"),
+        "bid" : 4,
+        "name" : "HTML",
+        "stock" : 21,
+        "desc" : "original book"
+}
+
+
+
+> db.Library.find({$and:[{"name":"HTML"},{"desc":"original book"}]}).pretty();
+{
+        "_id" : ObjectId("619592de47a73efd24f3f452"),
+        "bid" : 4,
+        "name" : "HTML",
+        "stock" : 21,
+        "desc" : "original book"
+}
+
+> db.Library.find({$or:[{"name":"HTML"},{"desc":"original book"}]}).pretty();
+{
+        "_id" : ObjectId("619592b447a73efd24f3f451"),
+        "bid" : 4,
+        "name" : "HTML",
+        "stock" : 21,
+        "desc" : "copied book"
+}
+{
+        "_id" : ObjectId("619592de47a73efd24f3f452"),
+        "bid" : 4,
+        "name" : "HTML",
+        "stock" : 21,
+        "desc" : "original book"
+}
+
+-------------------------------------------------------------------------
+
+> db.Library.save({"_id":ObjectId("123456789abcdef123456789"),"bid":5,"name":"Inevitable Curse","stock":5});
+WriteResult({
+        "nMatched" : 0,
+        "nUpserted" : 1,
+        "nModified" : 0,
+        "_id" : ObjectId("123456789abcdef123456789")
+})
+> db.Library.find().pretty();
+{
+        "_id" : ObjectId("6195910447a73efd24f3f44d"),
+        "bid" : 1,
+        "name" : "C++",
+        "stock" : 10
+}
+{
+        "_id" : ObjectId("6195912347a73efd24f3f44f"),
+        "bid" : 3,
+        "name" : "Python 3.7",
+        "stock" : 12
+}
+{
+        "_id" : ObjectId("619592b447a73efd24f3f451"),
+        "bid" : 4,
+        "name" : "HTML",
+        "stock" : 21,
+        "desc" : "copied book"
+}
+{
+        "_id" : ObjectId("619592de47a73efd24f3f452"),
+        "bid" : 4,
+        "name" : "HTML",
+        "stock" : 21,
+        "desc" : "original book"
+}
+{
+        "_id" : ObjectId("123456789abcdef123456789"),
+        "bid" : 5,
+        "name" : "Inevitable Curse",
+        "stock" : 5
+}
+
