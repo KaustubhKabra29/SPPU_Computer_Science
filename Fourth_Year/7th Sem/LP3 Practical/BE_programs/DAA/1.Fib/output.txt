@@ -1,0 +1,7 @@
+$python EXP1.py
+Enter number of terms 4
+Fibonacci sequence:
+0
+1
+1
+2
